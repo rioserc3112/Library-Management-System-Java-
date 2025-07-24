@@ -180,6 +180,7 @@ public class Main {
                     break;
             }
             
+<<<<<<< Updated upstream
         }
     }
     
@@ -194,6 +195,7 @@ public class Main {
     
     public static void Cambiar_Estado_Libro(){
 
+=======
             
             switch(seleccion){
                 case 0:
@@ -214,6 +216,7 @@ public class Main {
                     break;
             }
         }
+>>>>>>> Stashed changes
     }
 }
 
