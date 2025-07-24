@@ -4,6 +4,8 @@
  */
 package main;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author emma3
@@ -12,11 +14,50 @@ package main;
 //Emma 
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
+
+         System.out.println("Hola mundo, Halian =)"); 
+
          System.out.println("Hola mundo =)"); 
+         System.out.println("Hola equipo =)"); 
+         System.out.println("Hola Jose, pura vida=)"); 
+         
+         
+         catalogo();
     }
     
+    
+    
+    public static void catalogo(){
+        
+        //Menu Principal de Catalogo
+        
+        boolean ciclo = true;
+        while (ciclo){
+            
+            String[] opciones = {
+                "1. Mostrar Catalogo Completo", 
+                "2. Agregar Nuevo Libro", 
+                "3. Editar Informacion de Libro", 
+                "4. Cambiar Estado de Libro", 
+                "5. Salir"};
+            
+            
+           //Se pregunta 
+            int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                "Seleccione una opción:", 
+                "Menú Principal", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opciones, 
+                opciones[0]
+            );
+            
+       
+        }
+        
+    }
 }
+
