@@ -32,15 +32,21 @@ public class Libro {
     private Estado estadoLibro;
     private int vecesPrestado;
 
-        public Libro(String isbn, String titulo, String autor, Genra genero, String editorial, int anioPublicacion, Estado estadoLibro, int vecesPrestado) {
-            this.isbn = isbn;
+        public Libro(String titulo, String autor, Genra genero, String editorial, int anioPublicacion, Estado estadoLibro) {
             this.titulo = titulo;
             this.autor = autor;
             this.genero = genero;
             this.editorial = editorial;
             this.anioPublicacion = anioPublicacion;
             this.estadoLibro = estadoLibro;
-            this.vecesPrestado = vecesPrestado;
+            
+            //Se crea ID unico de libro
+            this.isbn = generar_id_libro();
+            
+        }
+        
+        public String generar_id_libro(){
+            retun "ID"
         }
     
     

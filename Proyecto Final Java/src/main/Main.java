@@ -154,7 +154,42 @@ public class Main {
                 opciones, 
                 opciones[0]
             );
+            
+            switch(seleccion){
+                case 0:
+                    Mostrar_Catalogo_Completo();
+                    break;
+                    
+                case 1:
+                    Agregar_Nuevo_Libro();
+                    break;
+                    
+                case 2:
+                    Editar_Informacion_Libro();
+                    break;
+                    
+                case 3:
+                    Cambiar_Estado_Libro();
+                    break;
+                case 4:
+                    //Salir
+                    ciclo = false;
+                    break;
+            }
+            
         }
+    }
+    
+    public static void Mostrar_Catalogo_Completo(){
+    }
+    
+    public static void Agregar_Nuevo_Libro(){
+    }
+    
+    public static void Editar_Informacion_Libro(){
+    }
+    
+    public static void Cambiar_Estado_Libro(){
     }
 }
 
