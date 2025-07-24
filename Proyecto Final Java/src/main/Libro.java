@@ -22,7 +22,7 @@ public class Libro {
         EN_REPARACION, 
         EXTRAVIADO
     }
-    
+
     private String isbn;
     private String titulo;
     private String autor;
@@ -31,11 +31,17 @@ public class Libro {
     private int anioPublicacion;
     private Estado estadoLibro;
     private int vecesPrestado;
-    
-    
-    
 
-    
+        public Libro(String isbn, String titulo, String autor, Genra genero, String editorial, int anioPublicacion, Estado estadoLibro, int vecesPrestado) {
+            this.isbn = isbn;
+            this.titulo = titulo;
+            this.autor = autor;
+            this.genero = genero;
+            this.editorial = editorial;
+            this.anioPublicacion = anioPublicacion;
+            this.estadoLibro = estadoLibro;
+            this.vecesPrestado = vecesPrestado;
+        }
     
     
     // ---------- Getters and Setters ---------- //
