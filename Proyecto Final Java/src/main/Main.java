@@ -147,7 +147,7 @@ public class Main {
                 "5. Salir"};
             
             
-           //Se pregunta 
+           //Se muestran botones con JOptionPane
             int seleccion = JOptionPane.showOptionDialog(
                 null, 
                 "Seleccione una opción:", 
@@ -159,10 +159,15 @@ public class Main {
                 opciones[0]
             );
             
+<<<<<<< Updated upstream
+=======
+            
+>>>>>>> Stashed changes
             switch(seleccion){
                 case 0:
                     Mostrar_Catalogo_Completo();
                     break;
+<<<<<<< Updated upstream
                     
                 case 1:
                     Agregar_Nuevo_Libro();
@@ -172,6 +177,14 @@ public class Main {
                     Editar_Informacion_Libro();
                     break;
                     
+=======
+                case 1:
+                    Agregar_Nuevo_Libro();
+                    break;
+                case 2:
+                    Editar_Informacion_Libro();
+                    break;
+>>>>>>> Stashed changes
                 case 3:
                     Cambiar_Estado_Libro();
                     break;
@@ -180,6 +193,7 @@ public class Main {
                     ciclo = false;
                     break;
             }
+<<<<<<< Updated upstream
             
         }
     }
@@ -194,6 +208,9 @@ public class Main {
     }
     
     public static void Cambiar_Estado_Libro(){
+=======
+        }
+>>>>>>> Stashed changes
     }
 }
 

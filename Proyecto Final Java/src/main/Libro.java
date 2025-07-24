@@ -46,7 +46,7 @@ public class Libro {
         }
         
         public String generar_id_libro(){
-            retun "ID"
+            return "ID";
         }
     
     
