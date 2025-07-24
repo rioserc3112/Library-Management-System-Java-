@@ -6,85 +6,36 @@ package main;
 
 public class Prestamo {
     enum estadoPrestamo {
-      ACTIVO,  DEVUELTO_A_TIEMPO, DEVUELTO_CON_RETRASO, CANCELADO_NO_RETIRADO
+      ACTIVO,  
+      DEVUELTO_A_TIEMPO, 
+      DEVUELTO_CON_RETRASO, 
+      CANCELADO_NO_RETIRADO
     }
     
-    private int idPrestamo; //inicia en 1000
-    private String socio;
-    private String libro;
+    private static int contador = 1000; //contador para ID de prestamo
+    private int idPrestamo; 
+    private Socio socio;
+    private Libro libro;
     private String fechaPrestamo;
     private String fechaDevolucionEstimada;
     private String fechaDevolucionReal;
-    private estadoPrestamo estadoPrest;
+    private estadoPrestamo EstadoPrestamo;
+    private double multaGeneradaEstePrestamo; //inicia en 0.0   
 
     public Prestamo() {
     }
 
-    public Prestamo(int idPrestamo, String socio, String libro, String fechaPrestamo, String fechaDevolucionEstimada, String fechaDevolucionReal, estadoPrestamo estadoPrest) {
-        this.idPrestamo = idPrestamo;
+    public Prestamo(int idPrestamo, Socio socio, Libro libro, String fechaPrestamo, String fechaDevolucionEstimada, String fechaDevolucionReal, estadoPrestamo EstadoPrestamo, double multaGeneradaEstePrestamo) {
+        this.idPrestamo = contador++;
         this.socio = socio;
         this.libro = libro;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionEstimada = fechaDevolucionEstimada;
         this.fechaDevolucionReal = fechaDevolucionReal;
-        this.estadoPrest = estadoPrest;
+        this.EstadoPrestamo = EstadoPrestamo;
+        this.multaGeneradaEstePrestamo = multaGeneradaEstePrestamo;
     }
 
-    public int getIdPrestamo() {
-        return idPrestamo;
-    }
-
-    public void setIdPrestamo(int idPrestamo) {
-        this.idPrestamo = idPrestamo;
-    }
-
-    public String getSocio() {
-        return socio;
-    }
-
-    public void setSocio(String socio) {
-        this.socio = socio;
-    }
-
-    public String getLibro() {
-        return libro;
-    }
-
-    public void setLibro(String libro) {
-        this.libro = libro;
-    }
-
-    public String getFechaPrestamo() {
-        return fechaPrestamo;
-    }
-
-    public void setFechaPrestamo(String fechaPrestamo) {
-        this.fechaPrestamo = fechaPrestamo;
-    }
-
-    public String getFechaDevolucionEstimada() {
-        return fechaDevolucionEstimada;
-    }
-
-    public void setFechaDevolucionEstimada(String fechaDevolucionEstimada) {
-        this.fechaDevolucionEstimada = fechaDevolucionEstimada;
-    }
-
-    public String getFechaDevolucionReal() {
-        return fechaDevolucionReal;
-    }
-
-    public void setFechaDevolucionReal(String fechaDevolucionReal) {
-        this.fechaDevolucionReal = fechaDevolucionReal;
-    }
-
-    public estadoPrestamo getEstadoPrest() {
-        return estadoPrest;
-    }
-
-    public void setEstadoPrest(estadoPrestamo estadoPrest) {
-        this.estadoPrest = estadoPrest;
-    }
-    
+   
     
 }

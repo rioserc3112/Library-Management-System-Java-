@@ -29,7 +29,11 @@ public class Main {
     
     //Aqui es la parte de Halian
     
-    
+    public static void biblioteca(){
+        System.out.println("===============LIBROS===============");
+        System.out.println("\nISBN == Titulo == Autor == Genero == Estado");
+        
+    }
     
     
     
