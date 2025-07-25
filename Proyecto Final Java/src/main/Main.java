@@ -4,6 +4,7 @@
  */
 package main;
 
+import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,15 +14,17 @@ import javax.swing.JOptionPane;
 
 //Emma 
 public class Main {
+    
+    //Se crean arreglos globales:
+    static Libro[] lista_libros = new Libro[50];
+    static int contador_libros = 0;
+    static Socio[] lista_socios = new Socio[30];
+    static Prestamo[] lista_prestamos = new Prestamo[50];
+    
 
     public static void main(String[] args) {
 
-         System.out.println("Hola mundo, Halian =)"); 
-
-         System.out.println("Hola mundo =)"); 
-         System.out.println("Hola equipo =)"); 
-         System.out.println("Hola Jose, pura vida=)"); 
-         
+         //Aqui debe ir el Menu Principal
          
          catalogo();
     }
@@ -182,21 +185,157 @@ public class Main {
             
         }
     }
-    
-    public static void Mostrar_Catalogo_Completo(){
-    }
-    
+        
     public static void Agregar_Nuevo_Libro(){
-
         
-
-
-        //Prueba 1 Main
+        //Se comprueba de que no hayan más de 50 libros
+        if(contador_libros >= 50){
+            JOptionPane.showMessageDialog(null, "No se pueden agregar más libros");
+            //Termine la función
+            return;
+        }
         
-        //Prueba de rama        
-        //Prueba 2 Main
-
+        
+        
+        //Se piden todos los datos
+        
+        String titulo = JOptionPane.showInputDialog("Ingrese el titulo del libro");
+        String autor = JOptionPane.showInputDialog("Ingrese el autor del libro");
+        String editorial = JOptionPane.showInputDialog("Ingrese el editorial del libro");
+        Libro.Genra genero = pedir_genero();
+        int anio_editorial = pedir_anio_editorial();
+        Libro.Estado estado_libro = pedir_estado();
+       
+        //public Libro(String titulo, String autor, Genra genero, String editorial, int anioPublicacion, Estado estadoLibro) {
+        
+        
+        //Se suma libro a la lista de libros
+        lista_libros[contador_libros] = new Libro(titulo, autor, genero, editorial, anio_editorial, estado_libro);
+        contador_libros++;
+        
+        JOptionPane.showMessageDialog(null, "Se agrego el libro " + titulo + " satisfactoriamente");
+        
     }
+    
+    public static Libro.Estado pedir_estado(){
+        while (true){
+            
+            String[] opciones = {
+                "DISPONIBLE",
+                "PRESTADO",
+                "EN REPARACION",
+                "EXTRAVIADO"
+            };
+
+            int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                "Seleccione el estado del libro:", 
+                "Estado", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opciones, 
+                opciones[0]
+            );
+
+
+            switch (seleccion){
+                case 0:
+                    return Libro.Estado.DISPONIBLE;
+
+                case 1:
+                    return Libro.Estado.PRESTADO;
+
+                case 2:
+                    return Libro.Estado.EN_REPARACION;
+
+                case 3:
+                    return Libro.Estado.EXTRAVIADO;         
+                    
+                default:
+                    return Libro.Estado.DISPONIBLE;
+
+            }       
+        }         
+    }
+    
+    public static int pedir_anio_editorial(){
+        
+        while(true){
+        
+            try{
+                int anio = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año de publicación del libro"));
+
+                if(anio <= 2025){
+                    if(anio > 0){
+                        return anio;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Debe ingresar un número positivo");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "¿El libro fue publicado en el futuro?");
+                }
+            }
+            catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "Formato de número incorrecto");
+                    }
+        }
+        
+        
+    }
+    
+    public static Libro.Genra pedir_genero(){
+        while (true){
+            
+            String[] opciones = {
+                "NOVELA,",
+                "CIENCIA_FICCION",
+                "HISTORIA",
+                "INFANTIL",
+                "POESIA",
+                "ENSAYO"
+            };
+
+            int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                "Seleccione el genero del libro:", 
+                "Genero", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opciones, 
+                opciones[0]
+            );
+
+
+            switch (seleccion){
+                case 0:
+                    return Libro.Genra.NOVELA;
+
+                case 1:
+                    return Libro.Genra.CIENCIA_FICCION;
+
+                case 2:
+                    return Libro.Genra.HISTORIA;
+
+                case 3:
+                    return Libro.Genra.INFANTIL;            
+
+                case 4:
+                    return Libro.Genra.POESIA;             
+
+                case 5:
+                    return Libro.Genra.ENSAYO;     
+                    
+                default:
+                    return Libro.Genra.NOVELA;
+
+            }       
+        }        
+    }
+    
     
     public static void Editar_Informacion_Libro(){
     }
@@ -204,5 +343,9 @@ public class Main {
     public static void Cambiar_Estado_Libro(){
 
     }
+    
+    public static void Mostrar_Catalogo_Completo(){
+    }
+    
 }
 

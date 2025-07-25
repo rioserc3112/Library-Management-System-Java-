@@ -7,6 +7,10 @@ package main;
  */
 public class Libro {
     
+    
+    //Se crean contadores de IDs:
+    static int id_libro = 0;
+    
     enum Genra{
     NOVELA, 
     CIENCIA_FICCION, 
@@ -46,7 +50,15 @@ public class Libro {
         }
         
         public String generar_id_libro(){
-            return "ID";
+            
+            String nuevo_ID = "LIB-";
+            
+            id_libro ++;
+            
+            nuevo_ID = nuevo_ID + id_libro;
+            
+            return nuevo_ID;      
+            
         }
     
     
