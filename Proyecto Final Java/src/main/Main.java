@@ -203,17 +203,30 @@ public class Main {
         String autor = JOptionPane.showInputDialog("Ingrese el autor del libro");
         String editorial = JOptionPane.showInputDialog("Ingrese el editorial del libro");
         Libro.Genra genero = pedir_genero();
-        int anio_editorial = pedir_anio_editorial();
+        int anio_publicacion = pedir_anio_editorial();
         Libro.Estado estado_libro = pedir_estado();
        
         //public Libro(String titulo, String autor, Genra genero, String editorial, int anioPublicacion, Estado estadoLibro) {
         
         
         //Se suma libro a la lista de libros
-        lista_libros[contador_libros] = new Libro(titulo, autor, genero, editorial, anio_editorial, estado_libro);
+        Libro nuevo_libro = new Libro(titulo, autor, genero, editorial, anio_publicacion, estado_libro);
+        lista_libros[contador_libros] = nuevo_libro;
         contador_libros++;
         
-        JOptionPane.showMessageDialog(null, "Se agrego el libro " + titulo + " satisfactoriamente");
+        String mensaje = "Se agrego correctamente el libro: \n";
+        mensaje = mensaje + "ID: " + nuevo_libro.getIsbn() + "\n";
+        mensaje = mensaje + "Titulo: " + nuevo_libro.getTitulo() + "\n";
+        mensaje = mensaje + "Autor: " + nuevo_libro.getAutor() + "\n";
+        mensaje = mensaje + "Editorial: " + nuevo_libro.getEditorial()+ "\n";
+        mensaje = mensaje + "Genero: " + nuevo_libro.getGenero() + "\n";
+        mensaje = mensaje + "Año publicación: " + nuevo_libro.getAnioPublicacion()+ "\n";
+        mensaje = mensaje + "Estado: " + nuevo_libro.getEstadoLibro() + "\n";
+        mensaje = mensaje + "Veces prestado: " + nuevo_libro.getVecesPrestado()+ "\n";
+        
+        
+        
+        JOptionPane.showMessageDialog(null, mensaje);
         
     }
     
@@ -290,7 +303,7 @@ public class Main {
         while (true){
             
             String[] opciones = {
-                "NOVELA,",
+                "NOVELA",
                 "CIENCIA_FICCION",
                 "HISTORIA",
                 "INFANTIL",
