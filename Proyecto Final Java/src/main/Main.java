@@ -706,6 +706,7 @@ public class Main {
             //Se crea libro aleatorio y se agrega a lista de libros
             
             lista_libros[i] = new Libro(titulo, autor, genero, editorial, anioPublicacion, estado);
+            contador_libros++;
             
             
         }
