@@ -349,7 +349,91 @@ public class Main {
         }        
     }
     
+    public static void Mostrar_Catalogo_Completo(){
+        Biblioteca();
+    }
     
+    
+    //Si el usuario ingresa una cantidad a mostrar, mostrar esa cantidad de libros
+    public static void Biblioteca(int cantidad_mostrar){
+        Mostrar_Biblioteca(cantidad_mostrar);
+
+    }
+    //Si el usuario NO ingresa una cantidad a mostrar, mostrar 10 libros
+    public static void Biblioteca(){
+        Mostrar_Biblioteca(10);
+
+    }
+    
+    public static void Mostrar_Biblioteca(int cantidad_mostrar){
+        int contador = 0;
+        
+        System.out.println("---------------------------------------------------------------------------------");
+        
+        String mensaje = "|";
+        mensaje = mensaje + generar_linea("ISBN");
+        mensaje = mensaje + generar_linea("Titulo");
+        mensaje = mensaje + generar_linea("Autor");
+        mensaje = mensaje + generar_linea("Genero");
+        mensaje = mensaje + generar_linea("Estado");
+        
+        System.out.println(mensaje);
+        
+        //Muestra la información de cada libro
+        for(Libro l: lista_libros){
+            if(l != null){
+                
+                mensaje = "|";
+                
+                mensaje = mensaje + generar_linea(l.getIsbn());
+                mensaje = mensaje + generar_linea(l.getTitulo());
+                mensaje = mensaje + generar_linea(l.getAutor());
+                mensaje = mensaje + generar_linea(String.valueOf(l.getGenero()));
+                mensaje = mensaje + generar_linea(String.valueOf(l.getEstadoLibro()));
+                
+                System.out.println(mensaje);                
+            }
+        }
+
+        System.out.println("---------------------------------------------------------------------------------");
+        
+    }
+    
+    public static String generar_linea(String texto){
+        String mensaje = "";
+        
+        int espacios_necesarios = calcular_espacios(texto);
+                
+                if(espacios_necesarios >= 0){
+                    mensaje = mensaje + texto + get_n_espacios(espacios_necesarios) + "|";
+                }
+                else{
+                    mensaje = mensaje + String.valueOf(texto).substring(0,15) + "|";
+                }
+        
+                return mensaje;
+                
+    }
+    
+    public static int calcular_espacios(String texto){
+        
+        int espacios_necesarios = 15 - texto.length();
+        
+        return espacios_necesarios;
+    }
+    
+    public static String get_n_espacios(int espacios_necesarios){
+        
+        String espacios = "";
+        
+        for(int i = 0; i < espacios_necesarios; i++){
+            espacios = espacios + " ";
+        }
+        
+        return espacios;
+        
+    }
+
     public static void Editar_Informacion_Libro(){
     }
     
@@ -357,8 +441,6 @@ public class Main {
 
     }
     
-    public static void Mostrar_Catalogo_Completo(){
-    }
     
 }
 
