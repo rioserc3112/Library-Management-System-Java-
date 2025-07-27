@@ -4,8 +4,10 @@
  */
 package main;
 
+import java.util.HashSet;
 import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
+import java.util.Random;
 
 /**
  *
@@ -21,8 +23,37 @@ public class Main {
     static Socio[] lista_socios = new Socio[30];
     static Prestamo[] lista_prestamos = new Prestamo[50];
     
-
+    //Para tener un número random
+    static Random random = new Random();
+    
     public static void main(String[] args) {
+        
+        //Se generan libros aleatorios
+        int cantidad_libros = 0;
+        while(true){
+            try{
+                
+                cantidad_libros = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de libros aleatorios que desea agregar"));
+                
+                if(cantidad_libros >= 0 && cantidad_libros <= 50){
+                    break;
+                }
+                else if(cantidad_libros >50){
+                    JOptionPane.showMessageDialog(null, "No puede exceder los 50 libros");
+                }
+                else if(cantidad_libros < 0){
+                    JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
+                }
+                
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Formato de número incorrecto, intente nuevamente");
+            }
+        }
+        
+        generar_libros_aleatoriamente(cantidad_libros);
+        
+        
 
          //Aqui debe ir el Menu Principal
          
@@ -215,18 +246,12 @@ public class Main {
         contador_libros++;
         
         String mensaje = "Se agrego correctamente el libro: \n";
-        mensaje = mensaje + "ID: " + nuevo_libro.getIsbn() + "\n";
-        mensaje = mensaje + "Titulo: " + nuevo_libro.getTitulo() + "\n";
-        mensaje = mensaje + "Autor: " + nuevo_libro.getAutor() + "\n";
-        mensaje = mensaje + "Editorial: " + nuevo_libro.getEditorial()+ "\n";
-        mensaje = mensaje + "Genero: " + nuevo_libro.getGenero() + "\n";
-        mensaje = mensaje + "Año publicación: " + nuevo_libro.getAnioPublicacion()+ "\n";
-        mensaje = mensaje + "Estado: " + nuevo_libro.getEstadoLibro() + "\n";
-        mensaje = mensaje + "Veces prestado: " + nuevo_libro.getVecesPrestado()+ "\n";
         
         
+        mensaje = mensaje + nuevo_libro.mostrar_datos();
         
-        JOptionPane.showMessageDialog(null, mensaje);
+        
+        JOptionPane.showMessageDialog(null, mensaje, "Libro agregado", JOptionPane.INFORMATION_MESSAGE);
         
     }
     
@@ -349,15 +374,344 @@ public class Main {
         }        
     }
     
-    
-    public static void Editar_Informacion_Libro(){
+    public static void Mostrar_Catalogo_Completo(){
+        Biblioteca();
     }
     
-    public static void Cambiar_Estado_Libro(){
+    
+    //Si el usuario ingresa una cantidad a mostrar, mostrar esa cantidad de libros
+    public static void Biblioteca(int cantidad_mostrar){
+        Mostrar_Biblioteca(cantidad_mostrar);
+
+    }
+    //Si el usuario NO ingresa una cantidad a mostrar, mostrar 10 libros
+    public static void Biblioteca(){
+        Mostrar_Biblioteca(10);
 
     }
     
-    public static void Mostrar_Catalogo_Completo(){
+    public static void Mostrar_Biblioteca(int cantidad_mostrar){
+        int contador = 0;
+        
+        System.out.println("---------------------------------------------------------------------------------");
+        
+        String mensaje = "|";
+        mensaje = mensaje + generar_linea("ISBN");
+        mensaje = mensaje + generar_linea("Titulo");
+        mensaje = mensaje + generar_linea("Autor");
+        mensaje = mensaje + generar_linea("Genero");
+        mensaje = mensaje + generar_linea("Estado");
+        
+        System.out.println(mensaje);
+        
+        //Muestra la información de cada libro
+        for(Libro l: lista_libros){
+            if(l != null){
+                
+                mensaje = "|";
+                
+                mensaje = mensaje + generar_linea(l.getIsbn());
+                mensaje = mensaje + generar_linea(l.getTitulo());
+                mensaje = mensaje + generar_linea(l.getAutor());
+                mensaje = mensaje + generar_linea(String.valueOf(l.getGenero()));
+                mensaje = mensaje + generar_linea(String.valueOf(l.getEstadoLibro()));
+                
+                System.out.println(mensaje);                
+            }
+        }
+
+        System.out.println("---------------------------------------------------------------------------------");
+        
+    }
+    
+    public static String generar_linea(String texto){
+        String mensaje = "";
+        
+        int espacios_necesarios = calcular_espacios(texto);
+                
+                if(espacios_necesarios >= 0){
+                    mensaje = mensaje + texto + get_n_espacios(espacios_necesarios) + "|";
+                }
+                else{
+                    mensaje = mensaje + String.valueOf(texto).substring(0,15) + "|";
+                }
+        
+                return mensaje;
+                
+    }
+    
+    public static int calcular_espacios(String texto){
+        
+        int espacios_necesarios = 15 - texto.length();
+        
+        return espacios_necesarios;
+    }
+    
+    public static String get_n_espacios(int espacios_necesarios){
+        
+        String espacios = "";
+        
+        for(int i = 0; i < espacios_necesarios; i++){
+            espacios = espacios + " ";
+        }
+        
+        return espacios;
+        
+    }
+
+    
+    public static void Cambiar_Estado_Libro(){
+        
+        String isbn = solicitar_ISBN();
+        
+        int index_libro = get_index_libro_by_ISBN(isbn);
+        
+        // Si el titulo fue prestado no se cambia el estado
+        if(lista_libros[index_libro].getEstadoLibro() == Libro.Estado.PRESTADO){
+            JOptionPane.showMessageDialog(null, "El libro " + lista_libros[index_libro].getTitulo() + 
+                    " está PRESTADO, su estado no se puede cambiar directamente aquí. Debe ser devuelto primero");
+            return;
+        }
+        
+        //Si no ha sido prestado, se cambia el estado
+        
+        Libro.Estado nuevo_estado = pedir_estado();
+        
+        lista_libros[index_libro].setEstadoLibro(nuevo_estado);
+        
+    }
+    
+    public static String solicitar_ISBN(){
+    
+        boolean isbn_existe = false;
+        
+        while(true){
+            
+            //Pedir el ISBN al usuario
+            String input_usuario = JOptionPane.showInputDialog("Ingrese el ISBN");
+            
+            
+            //Se comprueba si el ISBN existe en la lista de libros
+            
+            for(Libro l: lista_libros){
+                
+                if(l != null){
+                    //Si el ISBN esta en la lista
+                    if(l.getIsbn().equalsIgnoreCase(input_usuario)){
+                        isbn_existe = true;
+                        break;
+                    }
+                                
+                }
+            }
+            
+            if(isbn_existe){
+                return input_usuario;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "El ISBN: " + input_usuario + " no existe, intente con otro");
+            }
+            
+        }
+    }
+    
+    public static int get_index_libro_by_ISBN(String isbn){
+        
+               
+        for(int i = 0; i < lista_libros.length; i++){
+            if(lista_libros[i].getIsbn().equalsIgnoreCase(isbn)){
+                return i;
+            }
+        }
+        
+        return -10;
+    }
+    
+    public static void Editar_Informacion_Libro(){
+        
+        //Se pide ISBN
+        String isbn = solicitar_ISBN();
+        int index_libro = get_index_libro_by_ISBN(isbn);
+        
+        
+        //Se muestran datos del libro
+        String mensaje = "Los datos actuales del libro son: ";
+        mensaje = mensaje + lista_libros[index_libro].mostrar_datos();
+        
+        JOptionPane.showMessageDialog(null, mensaje, "Información del libro", JOptionPane.INFORMATION_MESSAGE);
+            
+        //Se muestra menu para ver que se desea editar
+        
+        while (true){
+            
+            String[] opciones = {
+                "Titulo",
+                "Autor",
+                "Editorial",
+                "Año Pub",
+                "Genero",
+                "Atrás"
+            };
+
+            int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                "¿Qué desea editar?", 
+                "Editar Libro", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opciones, 
+                opciones[0]
+            );
+
+
+            switch (seleccion){
+                case 0:
+                    //Para editar Titulo
+                    String nuevo_titulo = JOptionPane.showInputDialog("Ingrese el nuevo titulo");
+                    lista_libros[index_libro].setTitulo(nuevo_titulo);
+                    break;
+
+                case 1:
+                    //Para editar Autor
+                    String nuevo_autor = JOptionPane.showInputDialog("Ingrese el nuevo Autor");
+                    lista_libros[index_libro].setAutor(nuevo_autor);
+                    break;
+
+                case 2:
+                    //Para editar Editorial
+                    String nuevo_editorial = JOptionPane.showInputDialog("Ingrese el nuevo Editorial");
+                    lista_libros[index_libro].setEditorial(nuevo_editorial);
+                    break;
+
+                case 3:
+                    //Para editar Año Publicacion
+                    int nuevo_anio = pedir_anio_editorial();
+                    lista_libros[index_libro].setAnioPublicacion(nuevo_anio);
+                    break;
+                    
+
+                case 4:
+                    //Para editar Genero
+                    Libro.Genra nuevo_genero = pedir_genero();
+                    lista_libros[index_libro].setGenero(nuevo_genero);                    
+                    break;
+
+                default:
+                    //Atras
+                    return;
+
+            }       
+        
+            
+            //Muestra un mensaje de Si o No
+            int eleccion = JOptionPane.showConfirmDialog(null, "¿Desea seguir editando?", "Continuar", JOptionPane.YES_NO_OPTION);
+
+
+            //Si usuario elije que no entonces se termina la función
+            if(eleccion == 1){
+                return;
+            }
+
+        }    
+    }
+
+    public static void generar_libros_aleatoriamente(int cantidad){
+        // Listas predefinidas
+        String[] titulos = {
+            "El Quijote",
+            "Cien Anos de Soledad",
+            "1984",
+            "Moby Dick",
+            "Orgullo y Prejuicio",
+            "Crimen y Castigo",
+            "Los Miserables",
+            "La Metamorfosis",
+            "El Principito",
+            "Don Juan Tenorio",
+            "Fahrenheit 451",
+            "Dracula",
+            "El Retrato de Dorian Gray",
+            "Las Aventuras de Sherlock Holmes",
+            "La Isla del Tesoro",
+            "Guerra y Paz",
+            "Madame Bovary",
+            "El Conde de Montecristo",
+            "Rayuela",
+            "El Tunel"
+        };
+
+        String[] autores = {
+            "Miguel de Cervantes",
+            "Gabriel Garcia Marquez",
+            "George Orwell",
+            "Herman Melville",
+            "Jane Austen",
+            "Fiodor Dostoievski",
+            "Victor Hugo",
+            "Franz Kafka",
+            "Antoine de Saint Exupery",
+            "Jose Zorrilla",
+            "Ray Bradbury",
+            "Bram Stoker",
+            "Oscar Wilde",
+            "Arthur Conan Doyle",
+            "Robert Louis Stevenson",
+            "Leon Tolstoi",
+            "Gustave Flaubert",
+            "Alexandre Dumas",
+            "Julio Cortazar",
+            "Ernesto Sabato"
+        };
+
+        String[] editoriales = {
+            "Planeta",
+            "Anagrama",
+            "Penguin Random House",
+            "Alfaguara",
+            "Debolsillo",
+            "Tusquets",
+            "Seix Barral",
+            "Alianza Editorial",
+            "Ediciones Destino",
+            "Lumen",
+            "Siruela",
+            "Roca Editorial",
+            "Espasa",
+            "Salamandra",
+            "Acantilado",
+            "Nostra Ediciones",
+            "Castalia",
+            "Editorial Juventud",
+            "Porrua",
+            "Minotauro"
+        };
+
+        Libro.Genra[] generos = {Libro.Genra.NOVELA, Libro.Genra.CIENCIA_FICCION, Libro.Genra.HISTORIA, Libro.Genra.INFANTIL, Libro.Genra.POESIA, Libro.Genra.ENSAYO};
+        Libro.Estado[] estados = {Libro.Estado.DISPONIBLE, Libro.Estado.EN_REPARACION};
+        
+        
+        for(int i = 0; i < cantidad; i++){
+            // Datos aleatorios
+            String titulo = titulos[random.nextInt(titulos.length)];
+            String autor = autores[random.nextInt(autores.length)];
+            String editorial = editoriales[random.nextInt(editoriales.length)];
+            Libro.Genra genero = generos[random.nextInt(generos.length)];
+            Libro.Estado estado = estados[random.nextInt(estados.length)];
+            
+            //Se genera un año entre 1950 y 2023
+            int anioPublicacion = 1950 + random.nextInt(2023 - 1950 + 1);
+            
+            
+            //Se crea libro aleatorio y se agrega a lista de libros
+            
+            lista_libros[i] = new Libro(titulo, autor, genero, editorial, anioPublicacion, estado);
+            
+            
+        }
+        
+        
+        
     }
     
 }

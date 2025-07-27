@@ -60,6 +60,21 @@ public class Libro {
             return nuevo_ID;      
             
         }
+        
+        public String mostrar_datos(){
+            String mensaje = "";
+            
+            mensaje = mensaje + "ID: " + this.isbn + "\n";
+            mensaje = mensaje + "Titulo: " + this.titulo + "\n";
+            mensaje = mensaje + "Autor: " + this.autor + "\n";
+            mensaje = mensaje + "Editorial: " + this.editorial + "\n";
+            mensaje = mensaje + "Genero: " + this.genero + "\n";
+            mensaje = mensaje + "Año publicación: " + this.anioPublicacion + "\n";
+            mensaje = mensaje + "Estado: " + this.estadoLibro + "\n";
+            mensaje = mensaje + "Veces prestado: " + this.vecesPrestado + "\n";
+            
+            return mensaje;
+        }
     
     
     // ---------- Getters and Setters ---------- //
