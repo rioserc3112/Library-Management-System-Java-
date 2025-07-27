@@ -4,6 +4,7 @@
  */
 package main;
 
+import java.util.HashSet;
 import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
 
@@ -434,13 +435,75 @@ public class Main {
         
     }
 
-    public static void Editar_Informacion_Libro(){
-    }
     
     public static void Cambiar_Estado_Libro(){
-
+        
+        String isbn = solicitar_ISBN();
+        
+        int index_libro = get_index_libro_by_ISBN(isbn);
+        
+        // Si el titulo fue prestado no se cambia el estado
+        if(lista_libros[index_libro].getEstadoLibro() == Libro.Estado.PRESTADO){
+            JOptionPane.showMessageDialog(null, "El libro " + lista_libros[index_libro].getTitulo() + 
+                    " está PRESTADO, su estado no se puede cambiar directamente aquí. Debe ser devuelto primero");
+            return;
+        }
+        
+        //Si no ha sido prestado, se cambia el estado
+        
+        Libro.Estado nuevo_estado = pedir_estado();
+        
+        lista_libros[index_libro].setEstadoLibro(nuevo_estado);
+        
     }
     
     
+    public static void Editar_Informacion_Libro(){
+        
+    }
+    
+    public static String solicitar_ISBN(){
+    
+        boolean isbn_existe = false;
+        
+        while(true){
+            
+            //Pedir el ISBN al usuario
+            String input_usuario = JOptionPane.showInputDialog("Ingrese el ISBN");
+            
+            
+            //Se comprueba si el ISBN existe en la lista de libros
+            
+            for(Libro l: lista_libros){
+                //Si el ISBN esta en la lista
+                if(l.getIsbn().equalsIgnoreCase(input_usuario)){
+                    isbn_existe = true;
+                    break;
+                }
+            }
+            
+            if(isbn_existe){
+                return input_usuario;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "El ISBN: " + input_usuario + " no existe, intente con otro");
+            }
+            
+        }
+    }
+    
+    public static int get_index_libro_by_ISBN(String isbn){
+        
+               
+        for(int i = 0; i < lista_libros.length; i++){
+            if(lista_libros[i].getIsbn().equalsIgnoreCase(isbn)){
+                return i;
+            }
+        }
+        
+        return -10;
+    }
+        
+
 }
 
