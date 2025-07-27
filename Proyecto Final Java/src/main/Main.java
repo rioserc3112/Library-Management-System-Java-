@@ -216,18 +216,12 @@ public class Main {
         contador_libros++;
         
         String mensaje = "Se agrego correctamente el libro: \n";
-        mensaje = mensaje + "ID: " + nuevo_libro.getIsbn() + "\n";
-        mensaje = mensaje + "Titulo: " + nuevo_libro.getTitulo() + "\n";
-        mensaje = mensaje + "Autor: " + nuevo_libro.getAutor() + "\n";
-        mensaje = mensaje + "Editorial: " + nuevo_libro.getEditorial()+ "\n";
-        mensaje = mensaje + "Genero: " + nuevo_libro.getGenero() + "\n";
-        mensaje = mensaje + "Año publicación: " + nuevo_libro.getAnioPublicacion()+ "\n";
-        mensaje = mensaje + "Estado: " + nuevo_libro.getEstadoLibro() + "\n";
-        mensaje = mensaje + "Veces prestado: " + nuevo_libro.getVecesPrestado()+ "\n";
         
         
+        mensaje = mensaje + nuevo_libro.mostrar_datos();
         
-        JOptionPane.showMessageDialog(null, mensaje);
+        
+        JOptionPane.showMessageDialog(null, mensaje, "Libro agregado", JOptionPane.INFORMATION_MESSAGE);
         
     }
     
@@ -457,11 +451,6 @@ public class Main {
         
     }
     
-    
-    public static void Editar_Informacion_Libro(){
-        
-    }
-    
     public static String solicitar_ISBN(){
     
         boolean isbn_existe = false;
@@ -475,10 +464,14 @@ public class Main {
             //Se comprueba si el ISBN existe en la lista de libros
             
             for(Libro l: lista_libros){
-                //Si el ISBN esta en la lista
-                if(l.getIsbn().equalsIgnoreCase(input_usuario)){
-                    isbn_existe = true;
-                    break;
+                
+                if(l != null){
+                    //Si el ISBN esta en la lista
+                    if(l.getIsbn().equalsIgnoreCase(input_usuario)){
+                        isbn_existe = true;
+                        break;
+                    }
+                                
                 }
             }
             
@@ -503,7 +496,94 @@ public class Main {
         
         return -10;
     }
+    
+    public static void Editar_Informacion_Libro(){
         
+        //Se pide ISBN
+        String isbn = solicitar_ISBN();
+        int index_libro = get_index_libro_by_ISBN(isbn);
+        
+        
+        //Se muestran datos del libro
+        String mensaje = "Los datos actuales del libro son: ";
+        mensaje = mensaje + lista_libros[index_libro].mostrar_datos();
+        
+        JOptionPane.showMessageDialog(null, mensaje, "Información del libro", JOptionPane.INFORMATION_MESSAGE);
+            
+        //Se muestra menu para ver que se desea editar
+        
+        while (true){
+            
+            String[] opciones = {
+                "Titulo",
+                "Autor",
+                "Editorial",
+                "Año Pub",
+                "Genero",
+                "Atrás"
+            };
 
+            int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                "¿Qué desea editar?", 
+                "Editar Libro", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opciones, 
+                opciones[0]
+            );
+
+
+            switch (seleccion){
+                case 0:
+                    //Para editar Titulo
+                    String nuevo_titulo = JOptionPane.showInputDialog("Ingrese el nuevo titulo");
+                    lista_libros[index_libro].setTitulo(nuevo_titulo);
+                    break;
+
+                case 1:
+                    //Para editar Autor
+                    String nuevo_autor = JOptionPane.showInputDialog("Ingrese el nuevo Autor");
+                    lista_libros[index_libro].setAutor(nuevo_autor);
+                    break;
+
+                case 2:
+                    //Para editar Editorial
+                    String nuevo_editorial = JOptionPane.showInputDialog("Ingrese el nuevo Editorial");
+                    lista_libros[index_libro].setEditorial(nuevo_editorial);
+                    break;
+
+                case 3:
+                    //Para editar Año Publicacion
+                    int nuevo_anio = pedir_anio_editorial();
+                    lista_libros[index_libro].setAnioPublicacion(nuevo_anio);
+                    break;
+                    
+
+                case 4:
+                    //Para editar Genero
+                    Libro.Genra nuevo_genero = pedir_genero();
+                    lista_libros[index_libro].setGenero(nuevo_genero);                    
+                    break;
+
+                default:
+                    //Atras
+                    return;
+
+            }       
+        
+            
+            //Muestra un mensaje de Si o No
+            int eleccion = JOptionPane.showConfirmDialog(null, "¿Desea seguir editando?", "Continuar", JOptionPane.YES_NO_OPTION);
+
+
+            //Si usuario elije que no entonces se termina la función
+            if(eleccion == 1){
+                return;
+            }
+
+        }    
+    }    
 }
 
