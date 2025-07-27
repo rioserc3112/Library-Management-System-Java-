@@ -7,6 +7,7 @@ package main;
 import java.util.HashSet;
 import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
+import java.util.Random;
 
 /**
  *
@@ -22,8 +23,37 @@ public class Main {
     static Socio[] lista_socios = new Socio[30];
     static Prestamo[] lista_prestamos = new Prestamo[50];
     
-
+    //Para tener un número random
+    static Random random = new Random();
+    
     public static void main(String[] args) {
+        
+        //Se generan libros aleatorios
+        int cantidad_libros = 0;
+        while(true){
+            try{
+                
+                cantidad_libros = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de libros aleatorios que desea agregar"));
+                
+                if(cantidad_libros >= 0 && cantidad_libros <= 50){
+                    break;
+                }
+                else if(cantidad_libros >50){
+                    JOptionPane.showMessageDialog(null, "No puede exceder los 50 libros");
+                }
+                else if(cantidad_libros < 0){
+                    JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
+                }
+                
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Formato de número incorrecto, intente nuevamente");
+            }
+        }
+        
+        generar_libros_aleatoriamente(cantidad_libros);
+        
+        
 
          //Aqui debe ir el Menu Principal
          
@@ -584,6 +614,105 @@ public class Main {
             }
 
         }    
-    }    
+    }
+
+    public static void generar_libros_aleatoriamente(int cantidad){
+        // Listas predefinidas
+        String[] titulos = {
+            "El Quijote",
+            "Cien Anos de Soledad",
+            "1984",
+            "Moby Dick",
+            "Orgullo y Prejuicio",
+            "Crimen y Castigo",
+            "Los Miserables",
+            "La Metamorfosis",
+            "El Principito",
+            "Don Juan Tenorio",
+            "Fahrenheit 451",
+            "Dracula",
+            "El Retrato de Dorian Gray",
+            "Las Aventuras de Sherlock Holmes",
+            "La Isla del Tesoro",
+            "Guerra y Paz",
+            "Madame Bovary",
+            "El Conde de Montecristo",
+            "Rayuela",
+            "El Tunel"
+        };
+
+        String[] autores = {
+            "Miguel de Cervantes",
+            "Gabriel Garcia Marquez",
+            "George Orwell",
+            "Herman Melville",
+            "Jane Austen",
+            "Fiodor Dostoievski",
+            "Victor Hugo",
+            "Franz Kafka",
+            "Antoine de Saint Exupery",
+            "Jose Zorrilla",
+            "Ray Bradbury",
+            "Bram Stoker",
+            "Oscar Wilde",
+            "Arthur Conan Doyle",
+            "Robert Louis Stevenson",
+            "Leon Tolstoi",
+            "Gustave Flaubert",
+            "Alexandre Dumas",
+            "Julio Cortazar",
+            "Ernesto Sabato"
+        };
+
+        String[] editoriales = {
+            "Planeta",
+            "Anagrama",
+            "Penguin Random House",
+            "Alfaguara",
+            "Debolsillo",
+            "Tusquets",
+            "Seix Barral",
+            "Alianza Editorial",
+            "Ediciones Destino",
+            "Lumen",
+            "Siruela",
+            "Roca Editorial",
+            "Espasa",
+            "Salamandra",
+            "Acantilado",
+            "Nostra Ediciones",
+            "Castalia",
+            "Editorial Juventud",
+            "Porrua",
+            "Minotauro"
+        };
+
+        Libro.Genra[] generos = {Libro.Genra.NOVELA, Libro.Genra.CIENCIA_FICCION, Libro.Genra.HISTORIA, Libro.Genra.INFANTIL, Libro.Genra.POESIA, Libro.Genra.ENSAYO};
+        Libro.Estado[] estados = {Libro.Estado.DISPONIBLE, Libro.Estado.EN_REPARACION};
+        
+        
+        for(int i = 0; i < cantidad; i++){
+            // Datos aleatorios
+            String titulo = titulos[random.nextInt(titulos.length)];
+            String autor = autores[random.nextInt(autores.length)];
+            String editorial = editoriales[random.nextInt(editoriales.length)];
+            Libro.Genra genero = generos[random.nextInt(generos.length)];
+            Libro.Estado estado = estados[random.nextInt(estados.length)];
+            
+            //Se genera un año entre 1950 y 2023
+            int anioPublicacion = 1950 + random.nextInt(2023 - 1950 + 1);
+            
+            
+            //Se crea libro aleatorio y se agrega a lista de libros
+            
+            lista_libros[i] = new Libro(titulo, autor, genero, editorial, anioPublicacion, estado);
+            
+            
+        }
+        
+        
+        
+    }
+    
 }
 
