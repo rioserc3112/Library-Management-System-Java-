@@ -56,8 +56,8 @@ public class Main {
         
 
          //Aqui debe ir el Menu Principal
+         MenuPrincipial();
          
-         catalogo();
     }
     
     
@@ -714,6 +714,76 @@ public class Main {
         
         
     }
+
+
+public static void MenuPrincipial () {
     
+        boolean continuar = true;
+
+        while (continuar) {
+            String[] opciones = {
+                "Ver Biblioteca",
+                "Gestión de Préstamos",
+                "Catálogo de Libros",
+                "Administrar Socios",
+                "Ver Reportes",
+                "Salir del Sistema"
+            };
+
+            int seleccion = JOptionPane.showOptionDialog(
+                    null,
+                    "Bienvenido al sistema de biblioteca.\nSelecciona lo que deseas hacer:",
+                    "Menú Principal",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]);
+
+            switch (seleccion) {
+                case 0:
+                    //mostrarBiblioteca();  
+                    break;
+                case 1:
+                    //Prestamos();
+                    break;
+                case 2:
+                    catalogo();
+                    break;
+                case 3:
+                    //Socios();
+                    break;
+                case 4:
+                    //Reportes();
+                    break;
+                case 5:
+                    JOptionPane.showMessageDialog(null, "¡Hasta pronto! Cerrando el sistema.");
+                    continuar = false;
+                    break;
+                case -1:
+                    // El usuario cerró la ventana
+                    continuar = false;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Volviendo al menú.");
+            }
+        }
+
+        System.exit(0); 
+    }
+
+   
+
+
+
+   
+    
+
+   
+    
+
+    
+    
+  
 }
 
