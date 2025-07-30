@@ -715,6 +715,9 @@ public class Main {
         
     }
 
+    
+    
+//Esta es la parte de Jose Santos
 
 public static void MenuPrincipial () {
     
@@ -772,18 +775,5 @@ public static void MenuPrincipial () {
         System.exit(0); 
     }
 
-   
-
-
-
-   
-    
-
-   
-    
-
-    
-    
-  
 }
 
