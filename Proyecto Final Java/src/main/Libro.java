@@ -6,7 +6,7 @@ package main;
  * @author Emmanuel Rios Castro
  */
 public class Libro {
-    
+  //Hola mundo   
     
     //Se crean contadores de IDs:
     static int id_libro = 0;
