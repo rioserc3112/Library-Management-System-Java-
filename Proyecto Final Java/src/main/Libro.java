@@ -11,7 +11,7 @@ public class Libro {
     //Se crean contadores de IDs:
     static int id_libro = 0;
     
-    enum Genra{
+    enum Genra{ //Genra
     NOVELA, 
     CIENCIA_FICCION, 
     HISTORIA, 
@@ -142,5 +142,7 @@ public class Libro {
     public void setVecesPrestado(int vecesPrestado) {
         this.vecesPrestado = vecesPrestado;
     }
-    
+   public void aumentoVecesPrestado(){
+       this.vecesPrestado++;
+   }   
 }

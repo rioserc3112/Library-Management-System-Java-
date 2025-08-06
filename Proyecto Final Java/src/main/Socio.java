@@ -3,8 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package main;
-//Hola mundo
+
 public class Socio {
-    
-    
+ private int cantLibrosPrestados;   
+
+    public Socio() {
+    }
+
+    public Socio(int cantLibrosPrestados) {
+        this.cantLibrosPrestados = cantLibrosPrestados;
+    }
+    public void aumVecesPrestado(){
+        this.cantLibrosPrestados++;
+    }
+    public void dismVecesPrestado(){
+        if(this.cantLibrosPrestados > 0 ){
+            this.cantLibrosPrestados--;
+        }
+    }
 }
+
+
