@@ -69,7 +69,10 @@ public class Main {
         
     }
     
-    
+    public static void prestamos(){
+        
+}
+    }
     
     
     
@@ -775,5 +778,5 @@ public static void MenuPrincipial () {
         System.exit(0); 
     }
 
-}
+
 

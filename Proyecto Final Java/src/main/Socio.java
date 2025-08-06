@@ -6,4 +6,5 @@ package main;
 
 public class Socio {
     
+    
 }

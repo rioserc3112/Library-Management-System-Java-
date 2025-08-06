@@ -12,7 +12,7 @@ public class Prestamo {
       CANCELADO_NO_RETIRADO
     }
     
-    private static int contador = 1000; //contador para ID de prestamo
+    private int contador = 1000; //contador para ID de prestamo
     private int idPrestamo; 
     private Socio socio;
     private Libro libro;
