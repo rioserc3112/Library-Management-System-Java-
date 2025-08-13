@@ -5,6 +5,10 @@
 package main;
 
 public class Socio {
+    enum sociosEstado{
+        ACTIVO, MOROSO, SUSPENDIDO, INACTIVO
+    }
+    
  private int cantLibrosPrestados;   
 
     public Socio() {
