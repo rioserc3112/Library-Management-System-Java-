@@ -22,6 +22,7 @@ public class Main {
     static int contador_libros = 0;
     static Socio[] lista_socios = new Socio[30];
     static Prestamo[] lista_prestamos = new Prestamo[50];
+    static int contador_socios = 0;
     
     //Para tener un número random
     static Random random = new Random();
@@ -618,7 +619,16 @@ public class Main {
 
         }    
     }
-
+int cantidad_socios = 0;
+  while (true) {
+    try {
+        cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Cantidad de socios aleatorios (0-30):"));
+        if (cantidad_socios >= 0 && cantidad_socios <= 30) break;
+        JOptionPane.showMessageDialog(null, "Debe estar entre 0 y 30.");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Número inválido.");
+    }
+}
     public static void generar_libros_aleatoriamente(int cantidad){
         // Listas predefinidas
         String[] titulos = {
@@ -757,7 +767,7 @@ public static void MenuPrincipial () {
                     catalogo();
                     break;
                 case 3:
-                    //Socios();
+                    Socios();
                     break;
                 case 4:
                     //Reportes();
@@ -779,4 +789,201 @@ public static void MenuPrincipial () {
     }
 
 
+
+public static void Socios() {
+    boolean continuar = true;
+    while (continuar) {
+        String[] opciones = {
+            "Registrar Nuevo Socio",
+            "Consultar Datos de Socio",
+            "Actualizar Estado de Socio",
+            "Gestionar Multas de Socio",
+            "Salir"
+        };
+
+        int seleccion = JOptionPane.showOptionDialog(
+            null, "Gestión de Socios", "Socios",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+            null, opciones, opciones[0]
+        );
+
+        switch (seleccion) {
+            case 0: Registrar_Nuevo_Socio(); break;
+            case 1: Consultar_Datos_Socio(); break;
+            case 2: Actualizar_Estado_Socio(); break;
+            case 3: Gestionar_Multas_Socio(); break;
+            default: continuar = false; break;
+        }
+    }
+}
+
+public static int buscarSocio(String id) {
+    for (int i = 0; i < lista_socios.length; i++) {
+        if (lista_socios[i] != null && lista_socios[i].getIdSocio().equalsIgnoreCase(id)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+public static String pedirIdSocio() {
+    while (true) {
+        String id = JOptionPane.showInputDialog("Ingrese ID de socio:");
+        if (id == null) return null;
+        if (buscarSocio(id) != -1) return id;
+        JOptionPane.showMessageDialog(null, "No existe ese ID.");
+    }
+}
+
+public static String generarIdSocio() {
+    while (true) {
+        String letras = "" + (char)('A' + random.nextInt(26)) + (char)('A' + random.nextInt(26));
+        String numeros = "" + random.nextInt(10) + random.nextInt(10);
+        String id = "SOC-" + letras + numeros;
+        if (buscarSocio(id) == -1) return id;
+    }
+}
+
+public static String fechaActual() {
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    return ahora.format(f);
+}
+
+// ---- 1) Registrar ----
+public static void Registrar_Nuevo_Socio() {
+    if (contador_socios >= 30) {
+        JOptionPane.showMessageDialog(null, "Límite de socios alcanzado.");
+        return;
+    }
+    String id = generarIdSocio();
+    String nombre = "Socio " + (contador_socios + 1);
+    Socio s = new Socio(id, nombre, fechaActual(), Socio.EstadoSocio.ACTIVO, 0.0, 0);
+    lista_socios[contador_socios++] = s;
+
+    JOptionPane.showMessageDialog(null,
+        "ID: " + s.getIdSocio() + "\n" +
+        "Nombre: " + s.getNombreCompleto() + "\n" +
+        "Fecha Registro: " + s.getFechaRegistro() + "\n" +
+        "Estado: " + s.getEstadoSocio()
+    );
+}
+
+// ---- 2) Consultar ----
+public static void Consultar_Datos_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+    JOptionPane.showMessageDialog(null,
+        "ID: " + s.getIdSocio() + "\n" +
+        "Nombre: " + s.getNombreCompleto() + "\n" +
+        "Fecha Registro: " + s.getFechaRegistro() + "\n" +
+        "Estado: " + s.getEstadoSocio() + "\n" +
+        "Multas: " + s.getMultasAcumuladas() + "\n" +
+        "Libros Prestados: " + s.getCantidadLibrosPrestadosActual()
+    );
+}
+
+// ---- 3) Actualizar Estado ----
+public static void Actualizar_Estado_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+
+    String[] opciones = {"ACTIVO", "SUSPENDIDO", "INACTIVO", "Cancelar"};
+    int seleccion = JOptionPane.showOptionDialog(
+        null, "Estado actual: " + s.getEstadoSocio(),
+        "Actualizar Estado", JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]
+    );
+
+    if (seleccion == 0 && s.getMultasAcumuladas() > 0) {
+        s.setEstadoSocio(Socio.EstadoSocio.MOROSO);
+        JOptionPane.showMessageDialog(null, "Tiene multas pendientes. Se mantiene MOROSO.");
+        return;
+    }
+    if (seleccion == 0) s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+    if (seleccion == 1) s.setEstadoSocio(Socio.EstadoSocio.SUSPENDIDO);
+    if (seleccion == 2) s.setEstadoSocio(Socio.EstadoSocio.INACTIVO);
+
+    if (seleccion >= 0 && seleccion <= 2)
+        JOptionPane.showMessageDialog(null, "Estado actualizado a: " + s.getEstadoSocio());
+}
+
+// ---- 4) Gestionar Multas ----
+public static void Gestionar_Multas_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+
+    String[] opciones = {"Pagar Todo", "Pagar Parcial", "Cancelar"};
+    int seleccion = JOptionPane.showOptionDialog(
+        null, "Multas: " + s.getMultasAcumuladas(),
+        "Multas", JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]
+    );
+
+    if (seleccion == 0) {
+        s.setMultasAcumuladas(0.0);
+        if (s.getCantidadLibrosPrestadosActual() == 0 || s.getEstadoSocio() == Socio.EstadoSocio.MOROSO)
+            s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+        JOptionPane.showMessageDialog(null, "Multas pagadas. Saldo 0. Estado: " + s.getEstadoSocio());
+    }
+    else if (seleccion == 1) {
+        if (s.getMultasAcumuladas() <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay multas.");
+            return;
+        }
+        while (true) {
+            String in = JOptionPane.showInputDialog("Monto a pagar (saldo: " + s.getMultasAcumuladas() + "):");
+            if (in == null) return;
+            try {
+                double m = Double.parseDouble(in);
+                if (m <= 0 || m > s.getMultasAcumuladas()) {
+                    JOptionPane.showMessageDialog(null, "Monto inválido.");
+                    continue;
+                }
+                s.setMultasAcumuladas(s.getMultasAcumuladas() - m);
+                if (s.getMultasAcumuladas() > 0) s.setEstadoSocio(Socio.EstadoSocio.MOROSO);
+                else if (s.getCantidadLibrosPrestadosActual() == 0) s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+                JOptionPane.showMessageDialog(null, "Pago parcial registrado. Saldo: " + s.getMultasAcumuladas() + ". Estado: " + s.getEstadoSocio());
+                return;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato inválido.");
+            }
+        }
+    }
+}
+
+// ---- Generador aleatorio de socios con IF para multas ----
+public static void generar_socios_aleatoriamente(int cantidad) {
+    if (cantidad > 30) cantidad = 30;
+
+    int creados = 0;
+    while (creados < cantidad && contador_socios < 30) {
+        String id = generarIdSocio();
+        String nombre = "Socio " + (contador_socios + 1);
+        boolean moroso = random.nextInt(100) < 15;
+
+        double multa;
+        if (moroso) {
+            multa = 1000.0;
+        } else {
+            multa = 0.0;
+        }
+
+        Socio s = new Socio(
+            id,
+            nombre,
+            fechaActual(),
+            moroso ? Socio.EstadoSocio.MOROSO : Socio.EstadoSocio.ACTIVO,
+            multa,
+            0
+        );
+
+        lista_socios[contador_socios] = s;
+        contador_socios++;
+        creados++;
+    }
+}
 
