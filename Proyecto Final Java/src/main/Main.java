@@ -73,92 +73,6 @@ public class Main {
     public static void prestamos(){
         
 }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -619,16 +533,24 @@ public class Main {
 
         }    
     }
+    
+    //Se agrega nuevo método para que while(true) no se salga de la expeción
+    public int cantidasSocios(){
 int cantidad_socios = 0;
   while (true) {
     try {
         cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Cantidad de socios aleatorios (0-30):"));
         if (cantidad_socios >= 0 && cantidad_socios <= 30) break;
         JOptionPane.showMessageDialog(null, "Debe estar entre 0 y 30.");
-    } catch (NumberFormatException e) {
+    } 
+    catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Número inválido.");
     }
-}
+   }
+        return cantidad_socios;
+  
+    }
+    
     public static void generar_libros_aleatoriamente(int cantidad){
         // Listas predefinidas
         String[] titulos = {
@@ -850,6 +772,7 @@ public static String fechaActual() {
     return ahora.format(f);
 }
 
+//EMPIEZA NUEVO SOCIO
 // ---- 1) Registrar ----
 public static void Registrar_Nuevo_Socio() {
     if (contador_socios >= 30) {
@@ -868,7 +791,10 @@ public static void Registrar_Nuevo_Socio() {
         "Estado: " + s.getEstadoSocio()
     );
 }
+//TERMINA NUEVO SOCIO
 
+
+//EMPIEZA GENERAR DATOS SOCIO
 // ---- 2) Consultar ----
 public static void Consultar_Datos_Socio() {
     String id = pedirIdSocio();
@@ -883,7 +809,9 @@ public static void Consultar_Datos_Socio() {
         "Libros Prestados: " + s.getCantidadLibrosPrestadosActual()
     );
 }
+//TERMINA GENERAR DATOS SOCIO
 
+//EMPIEZA GENERAR ESTADO SOCIO
 // ---- 3) Actualizar Estado ----
 public static void Actualizar_Estado_Socio() {
     String id = pedirIdSocio();
@@ -909,7 +837,9 @@ public static void Actualizar_Estado_Socio() {
     if (seleccion >= 0 && seleccion <= 2)
         JOptionPane.showMessageDialog(null, "Estado actualizado a: " + s.getEstadoSocio());
 }
+//TERMINA GENERAR ESTADO SOCIO
 
+//EMPIEZA GENERAR MULTAS
 // ---- 4) Gestionar Multas ----
 public static void Gestionar_Multas_Socio() {
     String id = pedirIdSocio();
@@ -954,7 +884,9 @@ public static void Gestionar_Multas_Socio() {
         }
     }
 }
+//TERMINA GENERAR MULTAS
 
+//EMPIEZA GENERAR SOCIOS
 // ---- Generador aleatorio de socios con IF para multas ----
 public static void generar_socios_aleatoriamente(int cantidad) {
     if (cantidad > 30) cantidad = 30;
@@ -985,5 +917,6 @@ public static void generar_socios_aleatoriamente(int cantidad) {
         contador_socios++;
         creados++;
     }
+   } 
+  //TERMINA GENERAR SOCIOS
 }
-
