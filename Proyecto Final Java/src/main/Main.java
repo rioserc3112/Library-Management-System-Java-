@@ -98,7 +98,7 @@ public class Main {
                 Registrar_Devolucion();
                 break;
             case 2:
-                Consultar_Prestamo_ID(); 
+                //Consultar_Prestamo_ID(); 
                 break;
             case 3:
             default:
@@ -109,6 +109,7 @@ public class Main {
     }   
     static int contador_prestamos = 0;
     static int idPrestamoActual = 100;
+    
     public static void Registar_Prestamo(){
         if (contador_prestamos >= 50){
             JOptionPane.showMessageDialog(null, "Se alcanzo el limite en el sstema.");
