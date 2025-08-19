@@ -36,4 +36,20 @@ public class Socio {
     public void setCantidadLibrosPrestadosActual(int cantidadLibrosPrestadosActual) {
         this.cantidadLibrosPrestadosActual = cantidadLibrosPrestadosActual;
     }
+    private int cantLibrosPrestados;   
+
+    public Socio() {
+    }
+
+    public Socio(int cantLibrosPrestados) {
+        this.cantLibrosPrestados = cantLibrosPrestados;
+    }
+    public void aumVecesPrestado(){
+        this.cantLibrosPrestados++;
+    }
+    public void dismVecesPrestado(){
+        if(this.cantLibrosPrestados > 0 ){
+            this.cantLibrosPrestados--;
+        }
+    }
 }

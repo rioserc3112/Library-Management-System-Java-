@@ -64,10 +64,36 @@ public class Main {
     
     //Aqui es la parte de Halian
     
-    public static void biblioteca(){
-        System.out.println("===============LIBROS===============");
-        System.out.println("\nISBN == Titulo == Autor == Genero == Estado");
+    public static void biblioteca(Libro[] libros, int cantidadLibros, Socio[] socios, int cantidadSocios){
+        String mostrarBiblioteca = "===============LIBROS===============";
+        mostrarBiblioteca += String.format("%-10s %-30s %-20s %-15s %-15s\n", 
+                "\nISBN == Titulo == Autor == Genero == Estado");
         
+        int limiteLibros = Math.min(10, cantidadLibros);
+        for(int i =0; i < limiteLibros; i++){
+            Libro livros = libros[i];
+              mostrarBiblioteca += String.format("%-10s %-30s %-20s %-15s %-15s\n", 
+                livros.getIsbn(),
+                livros.getEstadoLibro(),
+                livros.getAutor(),
+                livros.getTitulo(),
+                livros.getGenero()
+                );
+        }
+        //Mostar condición de socios
+        int sociosActivos = 0, sociosMorosos = 0;
+        for(int i =0; i < cantidadSocios; i++){
+            Socio s = socios[i];
+            if(s.getEstadoSocio() == Socio.EstadoSocio.ACTIVO) sociosActivos++;
+            if(s.getEstadoSocio() == Socio.EstadoSocio.MOROSO) sociosMorosos++; 
+        }
+        
+        mostrarBiblioteca += "\nEstado de Socios: ";
+        mostrarBiblioteca += "Total Socios registrados: "+cantidadSocios+ "\n";
+        mostrarBiblioteca += "Socios activos registrados: "+sociosActivos+ "\n";
+        mostrarBiblioteca += "Socios morosos registrados: "+sociosMorosos+ "\n";
+        
+        JOptionPane.showMessageDialog(null, mostrarBiblioteca, "BIBLIOTECA", JOptionPane.INFORMATION_MESSAGE);
     }
     
      public static void prestamos(){
@@ -215,7 +241,7 @@ public class Main {
        java.time.LocalDate devReal =java.time.LocalDate.parse(fechaDev, java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa")); 
        long diasRetrasados = java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, devReal);
         if (diasRetrasados > 0) {
-        double multa = diasRetrasados * 5; // supponineod que son 5 dias de retraso
+        double multa = diasRetrasados * 5; // suponiendo que son 5 dias de retraso
         prestamo.setMultaGeneradaEstePrestamo(multa);
         //prestamo.getSocio().sumarMulta(multa);
         prestamo.setEstadoPrestamo(Prestamo.estadoPrestamo.DEVUELTO_CON_RETRASO);
@@ -230,7 +256,44 @@ public class Main {
     JOptionPane.showMessageDialog(null, "Libro devuelto exitosamente.\nEstado actualizado: " +prestamo.getEstadoPrestamo()+ "\nMulta: " + prestamo.getMultaGeneradaEstePrestamo());
    }
     
-    
+   public static void Consultar_Prestamo_ID(){
+       String ingresarID = JOptionPane.showInputDialog("Ingrese el ID del préstamo:");
+    int id;
+    try {
+        id = Integer.parseInt(ingresarID);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "ID NO EXISTE. Intente de nuevo.");
+        return;
+    }
+
+    //Se busca el préstamo en la lista
+    Prestamo prestamo = null;
+    for (Prestamo prestlist : lista_prestamos) {
+        if (prestlist != null && prestlist.getIdPrestamo() == id) {
+            prestamo = prestlist;
+            break;
+        }
+    }
+
+    // En caso de que prestamo no exista en la "base de datos"
+    if (prestamo == null) {
+        JOptionPane.showMessageDialog(null, "El préstamo con ID " + id + " NO existe.Intente de nuevo");
+        return;
+    }
+
+    // Imprimir detalles del préstamo
+    String mostarPrestamo = "===== DETALLES DEL PRÉSTAMO =====\n";
+    mostarPrestamo += "Préstamo ID: " + prestamo.getIdPrestamo() + "\n";
+    mostarPrestamo += "Socio: " + prestamo.getSocio().getNombreCompleto() + " (ID: " + prestamo.getSocio().getIdSocio() + ")\n";
+    mostarPrestamo += "Libro: " + prestamo.getLibro().getTitulo() + " (ISBN: " + prestamo.getLibro().getIsbn() + ")\n";
+    mostarPrestamo += "Fecha Prestamo: " + prestamo.getFechaPrestamo() + "\n";
+    mostarPrestamo += "Devolucion Estimada: " + prestamo.getFechaDevolucionEstimada() + "\n";
+    mostarPrestamo += "Fecha devolucion: " + (prestamo.getFechaDevolucionReal() == null ? "N/A" : prestamo.getFechaDevolucionReal()) + "\n";
+    mostarPrestamo += "Estado: " + prestamo.getEstadoPrestamo() + "\n";
+    mostarPrestamo += "Multa generada: " + prestamo.getMultaGeneradaEstePrestamo() + "\n"; //Si aplica
+
+    JOptionPane.showMessageDialog(null, mostarPrestamo, "Consulta de Préstamo", JOptionPane.INFORMATION_MESSAGE);
+}
     
     
     
@@ -922,7 +985,7 @@ public static String generarIdSocio() {
     }
 }
 
-public static String fechaActual() {
+public static String fecha_Actual(){
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
     java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     return ahora.format(f);
