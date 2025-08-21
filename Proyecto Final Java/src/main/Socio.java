@@ -5,6 +5,11 @@
 package main;
 
 public class Socio {
+    enum sociosEstado{
+        ACTIVO, MOROSO, SUSPENDIDO, INACTIVO
+    }
+    
+ private int cantLibrosPrestados;   
 
     public enum EstadoSocio { ACTIVO, MOROSO, SUSPENDIDO, INACTIVO }
 
@@ -52,4 +57,6 @@ public class Socio {
             this.cantLibrosPrestados--;
         }
     }
+}
+
 }
