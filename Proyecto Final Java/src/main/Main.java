@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-package main;
+
+//package main;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -10,7 +7,9 @@ import java.util.Locale;
 import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
 import java.util.Random;
-
+import main.Libro;
+import main.Prestamo;
+import main.Socio;
 
 /**
  *
@@ -106,7 +105,8 @@ public class Main {
 
         switch (seleccion) {
             case 0:
-                biblioteca(); 
+                //biblioteca(); 
+                Mostrar_Catalogo_Completo();
                 break;
             case 1:
                 prestamos(); 
@@ -129,7 +129,7 @@ public class Main {
                 break;
       }
      }
-    } 
+}
     //Aqui es la parte de Halian
     
     public static void biblioteca(Libro[] libros, int cantidadLibros, Socio[] socios, int cantidadSocios){
@@ -202,7 +202,7 @@ public class Main {
              JOptionPane.showMessageDialog(null, "El libro "+isbn+" no existe o no se encuentra registrado en el sistema");
         return;
         }
-        if (libro.getEstadoLibro() != Libro.Estado.DISPONIBLE){
+        if (libro.getEstadoLibro() != Estado.DISPONIBLE){
          JOptionPane.showMessageDialog(null,"El libro "+libro.getTitulo()+", se encuentra en estado "+libro.getEstadoLibro() );   
         return;
         }
@@ -247,6 +247,8 @@ public class Main {
     public static String fechaDev(int dExtras){
         java.time.LocalDate fecha = java.time.LocalDate.now().plusDays(dExtras);
         return fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
+        
+}
 
         int limiteLibros = Math.min(10, cantidadLibros);
         for(int i =0; i < limiteLibros; i++){
@@ -1230,7 +1232,6 @@ public static void MenuPrincipial () {
 
         System.exit(0); 
     }
-  }
 
 
 

@@ -41,7 +41,6 @@ public class Socio {
     public void setCantidadLibrosPrestadosActual(int cantidadLibrosPrestadosActual) {
         this.cantidadLibrosPrestadosActual = cantidadLibrosPrestadosActual;
     }
-    private int cantLibrosPrestados;   
 
     public Socio() {
     }
@@ -57,6 +56,4 @@ public class Socio {
             this.cantLibrosPrestados--;
         }
     }
-}
-
 }

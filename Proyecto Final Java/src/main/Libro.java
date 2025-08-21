@@ -11,7 +11,7 @@ public class Libro {
     //Se crean contadores de IDs:
     static int id_libro = 0;
     
-    enum Genra{ //Genra
+    public enum Genra{ //Genra
     NOVELA, 
     CIENCIA_FICCION, 
     HISTORIA, 
@@ -20,7 +20,7 @@ public class Libro {
     ENSAYO
 }
     
-    enum Estado{
+    public enum Estado{
         DISPONIBLE, 
         PRESTADO, 
         EN_REPARACION, 

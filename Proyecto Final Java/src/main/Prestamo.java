@@ -5,7 +5,7 @@
 package main;
 
 public class Prestamo {
-   enum estadoPrestamo {
+   public enum estadoPrestamo {
       ACTIVO,  
       DEVUELTO_A_TIEMPO, 
       DEVUELTO_CON_RETRASO, 
