@@ -55,6 +55,33 @@ public class Main {
         generar_libros_aleatoriamente(cantidad_libros);
         
         
+        
+        //Se generan socios aleatorios -------------
+        int cantidad_socios = 0;
+        while(true){
+            try{
+                
+                cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de socios aleatorios que desea agregar"));
+                
+                if(cantidad_socios >= 0 && cantidad_socios <= 50){
+                    break;
+                }
+                else if(cantidad_socios >50){
+                    JOptionPane.showMessageDialog(null, "No puede exceder los 30 socios");
+                }
+                else if(cantidad_socios < 0){
+                    JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
+                }
+                
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Formato de número incorrecto, intente nuevamente");
+            }
+        }
+        
+        generar_libros_aleatoriamente(cantidad_libros);
+        
+        
 
          //Aqui debe ir el Menu Principal
          MenuPrincipial();
@@ -900,6 +927,7 @@ public static void MenuPrincipial () {
             switch (seleccion) {
                 case 0:
                     //mostrarBiblioteca();  
+                    Mostrar_Catalogo_Completo();
                     break;
                 case 1:
                     //Prestamos();
@@ -912,6 +940,7 @@ public static void MenuPrincipial () {
                     break;
                 case 4:
                     //Reportes();
+                    JOptionPane.showConfirmDialog(null, "¡Esta funcion está siendo implementada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, "¡Hasta pronto! Cerrando el sistema.");
@@ -1000,7 +1029,7 @@ public static void Registrar_Nuevo_Socio() {
     }
     String id = generarIdSocio();
     String nombre = "Socio " + (contador_socios + 1);
-    Socio s = new Socio(id, nombre, fechaActual(), Socio.EstadoSocio.ACTIVO, 0.0, 0);
+    Socio s = new Socio(id, nombre, fecha_Actual(), Socio.EstadoSocio.ACTIVO, 0.0, 0);
     lista_socios[contador_socios++] = s;
 
     JOptionPane.showMessageDialog(null,
