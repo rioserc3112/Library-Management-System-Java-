@@ -1,5 +1,5 @@
 
-//package main;
+package main;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -56,34 +56,6 @@ public class Main {
         
         generar_libros_aleatoriamente(cantidad_libros);
         
-        
-        
-        //Se generan socios aleatorios -------------
-        int cantidad_socios = 0;
-        while(true){
-            try{
-                
-                cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de socios aleatorios que desea agregar"));
-                
-                if(cantidad_socios >= 0 && cantidad_socios <= 50){
-                    break;
-                }
-                else if(cantidad_socios >50){
-                    JOptionPane.showMessageDialog(null, "No puede exceder los 30 socios");
-                }
-                else if(cantidad_socios < 0){
-                    JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
-                }
-                
-            }
-            catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null, "Formato de número incorrecto, intente nuevamente");
-            }
-        }
-        
-        generar_libros_aleatoriamente(cantidad_libros);
-        
-        
 
          //Aqui debe ir el Menu Principal
          MenuPrincipial();
@@ -132,124 +104,13 @@ public class Main {
 }
     //Aqui es la parte de Halian
     
+        //Aqui es la parte de Halian
+    
     public static void biblioteca(Libro[] libros, int cantidadLibros, Socio[] socios, int cantidadSocios){
         String mostrarBiblioteca = "===============LIBROS===============";
         mostrarBiblioteca += String.format("%-10s %-30s %-20s %-15s %-15s\n", 
                 "\nISBN == Titulo == Autor == Genero == Estado");
         
-    }
-    
-    public static void prestamos(){
-        boolean ciclo = true;
-    while (ciclo) {
-        String[] opciones = {
-            "1. Registrar Prestamo", 
-            "2. Registrar Devolucion", 
-            "3. Consultar Prestamo por ID", 
-            "4. Salir"
-        };
-
-        int seleccion = JOptionPane.showOptionDialog(
-            null, 
-            "Seleccione una opcion:", 
-            "Menu de Prestamos", 
-            JOptionPane.DEFAULT_OPTION, 
-            JOptionPane.INFORMATION_MESSAGE, 
-            null, 
-            opciones, 
-            opciones[0]);
-
-        switch (seleccion) {
-            case 0:
-                Registar_Prestamo();
-                break;
-            case 1:
-                Registrar_Devolucion();
-                break;
-            case 2:
-                Consultar_Prestamo_ID(); 
-                break;
-            case 3:
-            default:
-                ciclo = false;
-                break;
-        }
-      }   
-    }   
-    static int contador_prestamos = 0;
-    static int idPrestamoActual = 100;
-    public static void Registar_Prestamo(){
-        if (contador_prestamos >= 50){
-            JOptionPane.showMessageDialog(null, "Se alcanzo el limite en el sstema.");
-            return;
-        }
-        //Se necesita clase socios para continuar
-        Socio socio = null;
-        String IDsocio = JOptionPane.showInputDialog(null, "Ingrese ID de socio");
-        for (Socio socios : lista_socios){
-            
-        }
-        //Busqueda por libro
-        Libro libro = null;
-        String isbn = JOptionPane.showInputDialog(null, "Ingrese ISBN del libro");
-        for (Libro libros : lista_libros){
-            if (libro != null && libro.getIsbn().equalsIgnoreCase(isbn)){
-                libro = libros;
-                break;
-            }
-        }
-        if (libro == null){
-             JOptionPane.showMessageDialog(null, "El libro "+isbn+" no existe o no se encuentra registrado en el sistema");
-        return;
-        }
-        if (libro.getEstadoLibro() != Estado.DISPONIBLE){
-         JOptionPane.showMessageDialog(null,"El libro "+libro.getTitulo()+", se encuentra en estado "+libro.getEstadoLibro() );   
-        return;
-        }
-        //Calculos para fechas de prestamos
- 
-        //Seccion de prestamos
-        String prestamoDate = fechaActual();
-        String devoDateAprox = fechaDev(15); //contador que inicia desde el dia del prestamo
-    
-        //Generamos un prestamo en esta seccion
-        Prestamo nuevoPrest = new Prestamo();
-    nuevoPrest.setIdPrestamo(idPrestamoActual++);
-    nuevoPrest.setSocio(socio);
-    nuevoPrest.setLibro(libro);
-    nuevoPrest.setFechaPrestamo(prestamoDate);
-    nuevoPrest.setFechaDevolucionEstimada(devoDateAprox);
-    nuevoPrest.setEstadoPrestamo(Prestamo.estadoPrestamo.ACTIVO);
-    nuevoPrest.setFechaDevolucionReal(null);
-    nuevoPrest.setMultaGeneradaEstePrestamo(0.0);
-   lista_prestamos[contador_prestamos++] = nuevoPrest;
-   libro.setEstadoLibro(Libro.Estado.PRESTADO);
-   libro.aumentoVecesPrestado();
-   socio.aumVecesPrestado();
-   
-   String salidaRegistrado = "Se registro prestamo. Detalles:\n";
-   salidaRegistrado += "ID Prestamo: "+nuevoPrest.getIdPrestamo()+"\n";
-   //(Aun se necesita crear clase socio)PrestRegistrado += "Nombre del socio: "+
-   salidaRegistrado += "Libro: "+libro.getTitulo()+"\n"; 
-   salidaRegistrado += "Fecha en la que se realizo el prestamo: "+prestamoDate+"\n";
-   salidaRegistrado += "Fecha estimada de su devolucion: "+devoDateAprox+"\n";
-   salidaRegistrado += "Se encuentra en estado: "+nuevoPrest.getEstadoPrestamo()+"\n";
-   JOptionPane.showMessageDialog(null,salidaRegistrado);
-   
-    
-   }  
-   
-
-    public static String fechaActual(){
-        java.time.LocalDate hoy = java.time.LocalDate.now();
-        return hoy.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
-    }
-    public static String fechaDev(int dExtras){
-        java.time.LocalDate fecha = java.time.LocalDate.now().plusDays(dExtras);
-        return fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
-        
-}
-
         int limiteLibros = Math.min(10, cantidadLibros);
         for(int i =0; i < limiteLibros; i++){
             Libro livros = libros[i];
@@ -275,7 +136,6 @@ public class Main {
         mostrarBiblioteca += "Socios morosos registrados: "+sociosMorosos+ "\n";
         
         JOptionPane.showMessageDialog(null, mostrarBiblioteca, "BIBLIOTECA", JOptionPane.INFORMATION_MESSAGE);
-
     }
     
      public static void prestamos(){
@@ -330,7 +190,7 @@ public class Main {
             
         }
         //Busqueda por libro
-        Libro libro = null;
+        Libro libro = lista_libros[0];
         String isbn = JOptionPane.showInputDialog(null, "Ingrese ISBN del libro");
         for (Libro libros : lista_libros){
             if (libro != null && libro.getIsbn().equalsIgnoreCase(isbn)){
@@ -389,6 +249,7 @@ public class Main {
         return fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
     }
     
+    
     public static void Registrar_Devolucion(){
         String datoDev =JOptionPane.showInputDialog("Digite ID del devolucion de prestamo: ");
         int id;
@@ -422,10 +283,7 @@ public class Main {
        java.time.LocalDate devReal =java.time.LocalDate.parse(fechaDev, java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa")); 
        long diasRetrasados = java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, devReal);
         if (diasRetrasados > 0) {
-
-        double multa = diasRetrasados * 5; // supponineod que son 5 dias de retraso
         double multa = diasRetrasados * 5; // suponiendo que son 5 dias de retraso
-
         prestamo.setMultaGeneradaEstePrestamo(multa);
         //prestamo.getSocio().sumarMulta(multa);
         prestamo.setEstadoPrestamo(Prestamo.estadoPrestamo.DEVUELTO_CON_RETRASO);
@@ -439,123 +297,6 @@ public class Main {
 
     JOptionPane.showMessageDialog(null, "Libro devuelto exitosamente.\nEstado actualizado: " +prestamo.getEstadoPrestamo()+ "\nMulta: " + prestamo.getMultaGeneradaEstePrestamo());
    }
-
-    
-    public static void Consultar_Prestamo_ID(){
-        String datoPrest =JOptionPane.showInputDialog("Digite ID del prestamo realizado");
-        int id;
-        try {
-        id = Integer.parseInt(datoPrest);
-    } 
-        catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "ID no registrado. Intente de nuevo");
-        return;
-    }
-        Prestamo found = null;
-        for (Prestamo prestamo : lista_prestamos){
-            if (prestamo != null && prestamo.getIdPrestamo()==id){
-                found = prestamo;
-                break;
-            }
-        }
-        if (found == null){
-            JOptionPane.showMessageDialog(null, "Prestamo con ID "+id+" no pudo ser encontrado o no existe. Intente de nuevo");
-        return;
-        }
-        //Salida si los datos existen
-        String salidaConsultar = "ID prestamo: "+found.getIdPrestamo()+"\n";
-        //salidaConsultar += "Socio"+found.getSocio(); (Necesitamos calse socio funcionando
-        salidaConsultar += "Libro: "+found.getLibro().getTitulo()+" -ISBN "+found.getLibro().getIsbn()+"-\n";
-        salidaConsultar += "Fecha de prestamo: "+found.getFechaPrestamo()+"\n";
-        salidaConsultar += "Fecha estimada para su devolucion: "+found.getFechaDevolucionEstimada()+"\n";
-        salidaConsultar += "Fecha en la que de devolvio: "+(found.getFechaDevolucionReal() != null ? found.getFechaDevolucionReal() : "N/A \n"); // != null ? found.getFechaDevolucionReal() : "N/A en caso de aplicar una multa
-        salidaConsultar += "Estado del libro: "+found.getEstadoPrestamo()+"\n";
-        salidaConsultar += "Multa generada: "+found.getMultaGeneradaEstePrestamo();
-    JOptionPane.showMessageDialog(null,salidaConsultar);
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
    public static void Consultar_Prestamo_ID(){
        String ingresarID = JOptionPane.showInputDialog("Ingrese el ID del préstamo:");
@@ -595,6 +336,8 @@ public class Main {
 
     JOptionPane.showMessageDialog(null, mostarPrestamo, "Consulta de Préstamo", JOptionPane.INFORMATION_MESSAGE);
 }
+    
+    
     
     
     
