@@ -25,6 +25,7 @@ public class Main {
     static int contador_libros = 0;
     static Socio[] lista_socios = new Socio[30];
     static Prestamo[] lista_prestamos = new Prestamo[50];
+    static int contador_socios = 0;
     
     //Para tener un número random
     static Random random = new Random();
@@ -45,6 +46,33 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "No puede exceder los 50 libros");
                 }
                 else if(cantidad_libros < 0){
+                    JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
+                }
+                
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Formato de número incorrecto, intente nuevamente");
+            }
+        }
+        
+        generar_libros_aleatoriamente(cantidad_libros);
+        
+        
+        
+        //Se generan socios aleatorios -------------
+        int cantidad_socios = 0;
+        while(true){
+            try{
+                
+                cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de socios aleatorios que desea agregar"));
+                
+                if(cantidad_socios >= 0 && cantidad_socios <= 50){
+                    break;
+                }
+                else if(cantidad_socios >50){
+                    JOptionPane.showMessageDialog(null, "No puede exceder los 30 socios");
+                }
+                else if(cantidad_socios < 0){
                     JOptionPane.showMessageDialog(null, "Debe ser un número positivo");
                 }
                 
@@ -104,9 +132,10 @@ public class Main {
     } 
     //Aqui es la parte de Halian
     
-    public static void biblioteca(){
-        System.out.println("===============LIBROS===============");
-        System.out.println("\nISBN == Titulo == Autor == Genero == Estado");
+    public static void biblioteca(Libro[] libros, int cantidadLibros, Socio[] socios, int cantidadSocios){
+        String mostrarBiblioteca = "===============LIBROS===============";
+        mostrarBiblioteca += String.format("%-10s %-30s %-20s %-15s %-15s\n", 
+                "\nISBN == Titulo == Autor == Genero == Estado");
         
     }
     
@@ -218,8 +247,145 @@ public class Main {
     public static String fechaDev(int dExtras){
         java.time.LocalDate fecha = java.time.LocalDate.now().plusDays(dExtras);
         return fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
+
+        int limiteLibros = Math.min(10, cantidadLibros);
+        for(int i =0; i < limiteLibros; i++){
+            Libro livros = libros[i];
+              mostrarBiblioteca += String.format("%-10s %-30s %-20s %-15s %-15s\n", 
+                livros.getIsbn(),
+                livros.getEstadoLibro(),
+                livros.getAutor(),
+                livros.getTitulo(),
+                livros.getGenero()
+                );
+        }
+        //Mostar condición de socios
+        int sociosActivos = 0, sociosMorosos = 0;
+        for(int i =0; i < cantidadSocios; i++){
+            Socio s = socios[i];
+            if(s.getEstadoSocio() == Socio.EstadoSocio.ACTIVO) sociosActivos++;
+            if(s.getEstadoSocio() == Socio.EstadoSocio.MOROSO) sociosMorosos++; 
+        }
+        
+        mostrarBiblioteca += "\nEstado de Socios: ";
+        mostrarBiblioteca += "Total Socios registrados: "+cantidadSocios+ "\n";
+        mostrarBiblioteca += "Socios activos registrados: "+sociosActivos+ "\n";
+        mostrarBiblioteca += "Socios morosos registrados: "+sociosMorosos+ "\n";
+        
+        JOptionPane.showMessageDialog(null, mostrarBiblioteca, "BIBLIOTECA", JOptionPane.INFORMATION_MESSAGE);
+
     }
     
+     public static void prestamos(){
+        boolean ciclo = true;
+    while (ciclo) {
+        String[] opciones = {
+            "1. Registrar Prestamo", 
+            "2. Registrar Devolucion", 
+            "3. Consultar Prestamo por ID", 
+            "4. Salir"
+        };
+
+        int seleccion = JOptionPane.showOptionDialog(
+            null, 
+            "Seleccione una opcion:", 
+            "Menu de Prestamos", 
+            JOptionPane.DEFAULT_OPTION, 
+            JOptionPane.INFORMATION_MESSAGE, 
+            null, 
+            opciones, 
+            opciones[0]);
+
+        switch (seleccion) {
+            case 0:
+                Registar_Prestamo();
+                break;
+            case 1:
+                Registrar_Devolucion();
+                break;
+            case 2:
+                //Consultar_Prestamo_ID(); 
+                break;
+            case 3:
+            default:
+                ciclo = false;
+                break;
+        }
+      }   
+    }   
+    static int contador_prestamos = 0;
+    static int idPrestamoActual = 100;
+    
+    public static void Registar_Prestamo(){
+        if (contador_prestamos >= 50){
+            JOptionPane.showMessageDialog(null, "Se alcanzo el limite en el sstema.");
+            return;
+        }
+        //Se necesita clase socios para continuar
+        Socio socio = null;
+        String IDsocio = JOptionPane.showInputDialog(null, "Ingrese ID de socio");
+        for (Socio socios : lista_socios){
+            
+        }
+        //Busqueda por libro
+        Libro libro = null;
+        String isbn = JOptionPane.showInputDialog(null, "Ingrese ISBN del libro");
+        for (Libro libros : lista_libros){
+            if (libro != null && libro.getIsbn().equalsIgnoreCase(isbn)){
+                libro = libros;
+                break;
+            }
+        }
+        if (libro == null){
+             JOptionPane.showMessageDialog(null, "El libro "+isbn+" no existe o no se encuentra registrado en el sistema");
+        return;
+        }
+        if (libro.getEstadoLibro() != Libro.Estado.DISPONIBLE){
+         JOptionPane.showMessageDialog(null,"El libro "+libro.getTitulo()+", se encuentra en estado "+libro.getEstadoLibro() );   
+        return;
+        }
+        //Calculos para fechas de prestamos
+ 
+        //Seccion de prestamos
+        String prestamoDate = fechaActual();
+        String devoDateAprox = fechaDev(15); //contador que inicia desde el dia del prestamo
+    
+        //Generamos un prestamo en esta seccion
+        Prestamo nuevoPrest = new Prestamo();
+    nuevoPrest.setIdPrestamo(idPrestamoActual++);
+    nuevoPrest.setSocio(socio);
+    nuevoPrest.setLibro(libro);
+    nuevoPrest.setFechaPrestamo(prestamoDate);
+    nuevoPrest.setFechaDevolucionEstimada(devoDateAprox);
+    nuevoPrest.setEstadoPrestamo(Prestamo.estadoPrestamo.ACTIVO);
+    nuevoPrest.setFechaDevolucionReal(null);
+    nuevoPrest.setMultaGeneradaEstePrestamo(0.0);
+   lista_prestamos[contador_prestamos++] = nuevoPrest;
+   libro.setEstadoLibro(Libro.Estado.PRESTADO);
+   libro.aumentoVecesPrestado();
+   socio.aumVecesPrestado();
+   
+   String salidaRegistrado = "Se registro prestamo. Detalles:\n";
+   salidaRegistrado += "ID Prestamo: "+nuevoPrest.getIdPrestamo()+"\n";
+   //(Aun se necesita crear clase socio)PrestRegistrado += "Nombre del socio: "+
+   salidaRegistrado += "Libro: "+libro.getTitulo()+"\n"; 
+   salidaRegistrado += "Fecha en la que se realizo el prestamo: "+prestamoDate+"\n";
+   salidaRegistrado += "Fecha estimada de su devolucion: "+devoDateAprox+"\n";
+   salidaRegistrado += "Se encuentra en estado: "+nuevoPrest.getEstadoPrestamo()+"\n";
+   JOptionPane.showMessageDialog(null,salidaRegistrado);
+   
+    
+   }  
+   
+
+    public static String fechaActual(){
+        java.time.LocalDate hoy = java.time.LocalDate.now();
+        return hoy.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
+    }
+    public static String fechaDev(int dExtras){
+        java.time.LocalDate fecha = java.time.LocalDate.now().plusDays(dExtras);
+        return fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa"));
+    }
     
     public static void Registrar_Devolucion(){
         String datoDev =JOptionPane.showInputDialog("Digite ID del devolucion de prestamo: ");
@@ -254,7 +420,10 @@ public class Main {
        java.time.LocalDate devReal =java.time.LocalDate.parse(fechaDev, java.time.format.DateTimeFormatter.ofPattern("dd/mm/aaaa")); 
        long diasRetrasados = java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, devReal);
         if (diasRetrasados > 0) {
+
         double multa = diasRetrasados * 5; // supponineod que son 5 dias de retraso
+        double multa = diasRetrasados * 5; // suponiendo que son 5 dias de retraso
+
         prestamo.setMultaGeneradaEstePrestamo(multa);
         //prestamo.getSocio().sumarMulta(multa);
         prestamo.setEstadoPrestamo(Prestamo.estadoPrestamo.DEVUELTO_CON_RETRASO);
@@ -268,7 +437,7 @@ public class Main {
 
     JOptionPane.showMessageDialog(null, "Libro devuelto exitosamente.\nEstado actualizado: " +prestamo.getEstadoPrestamo()+ "\nMulta: " + prestamo.getMultaGeneradaEstePrestamo());
    }
-  
+
     
     public static void Consultar_Prestamo_ID(){
         String datoPrest =JOptionPane.showInputDialog("Digite ID del prestamo realizado");
@@ -385,6 +554,45 @@ public class Main {
     
     
     
+    
+   public static void Consultar_Prestamo_ID(){
+       String ingresarID = JOptionPane.showInputDialog("Ingrese el ID del préstamo:");
+    int id;
+    try {
+        id = Integer.parseInt(ingresarID);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "ID NO EXISTE. Intente de nuevo.");
+        return;
+    }
+
+    //Se busca el préstamo en la lista
+    Prestamo prestamo = null;
+    for (Prestamo prestlist : lista_prestamos) {
+        if (prestlist != null && prestlist.getIdPrestamo() == id) {
+            prestamo = prestlist;
+            break;
+        }
+    }
+
+    // En caso de que prestamo no exista en la "base de datos"
+    if (prestamo == null) {
+        JOptionPane.showMessageDialog(null, "El préstamo con ID " + id + " NO existe.Intente de nuevo");
+        return;
+    }
+
+    // Imprimir detalles del préstamo
+    String mostarPrestamo = "===== DETALLES DEL PRÉSTAMO =====\n";
+    mostarPrestamo += "Préstamo ID: " + prestamo.getIdPrestamo() + "\n";
+    mostarPrestamo += "Socio: " + prestamo.getSocio().getNombreCompleto() + " (ID: " + prestamo.getSocio().getIdSocio() + ")\n";
+    mostarPrestamo += "Libro: " + prestamo.getLibro().getTitulo() + " (ISBN: " + prestamo.getLibro().getIsbn() + ")\n";
+    mostarPrestamo += "Fecha Prestamo: " + prestamo.getFechaPrestamo() + "\n";
+    mostarPrestamo += "Devolucion Estimada: " + prestamo.getFechaDevolucionEstimada() + "\n";
+    mostarPrestamo += "Fecha devolucion: " + (prestamo.getFechaDevolucionReal() == null ? "N/A" : prestamo.getFechaDevolucionReal()) + "\n";
+    mostarPrestamo += "Estado: " + prestamo.getEstadoPrestamo() + "\n";
+    mostarPrestamo += "Multa generada: " + prestamo.getMultaGeneradaEstePrestamo() + "\n"; //Si aplica
+
+    JOptionPane.showMessageDialog(null, mostarPrestamo, "Consulta de Préstamo", JOptionPane.INFORMATION_MESSAGE);
+}
     
     
     
@@ -844,7 +1052,24 @@ public class Main {
 
         }    
     }
-
+    
+    //Se agrega nuevo método para que while(true) no se salga de la expeción
+    public int cantidasSocios(){
+int cantidad_socios = 0;
+  while (true) {
+    try {
+        cantidad_socios = Integer.parseInt(JOptionPane.showInputDialog("Cantidad de socios aleatorios (0-30):"));
+        if (cantidad_socios >= 0 && cantidad_socios <= 30) break;
+        JOptionPane.showMessageDialog(null, "Debe estar entre 0 y 30.");
+    } 
+    catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Número inválido.");
+    }
+   }
+        return cantidad_socios;
+  
+    }
+    
     public static void generar_libros_aleatoriamente(int cantidad){
         // Listas predefinidas
         String[] titulos = {
@@ -975,6 +1200,7 @@ public static void MenuPrincipial () {
             switch (seleccion) {
                 case 0:
                     //mostrarBiblioteca();  
+                    Mostrar_Catalogo_Completo();
                     break;
                 case 1:
                     prestamos();
@@ -983,10 +1209,11 @@ public static void MenuPrincipial () {
                     catalogo();
                     break;
                 case 3:
-                    //Socios();
+                    Socios();
                     break;
                 case 4:
                     //Reportes();
+                    JOptionPane.showConfirmDialog(null, "¡Esta funcion está siendo implementada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, "¡Hasta pronto! Cerrando el sistema.");
@@ -1008,3 +1235,211 @@ public static void MenuPrincipial () {
 
 
 
+public static void Socios() {
+    boolean continuar = true;
+    while (continuar) {
+        String[] opciones = {
+            "Registrar Nuevo Socio",
+            "Consultar Datos de Socio",
+            "Actualizar Estado de Socio",
+            "Gestionar Multas de Socio",
+            "Salir"
+        };
+
+        int seleccion = JOptionPane.showOptionDialog(
+            null, "Gestión de Socios", "Socios",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+            null, opciones, opciones[0]
+        );
+
+        switch (seleccion) {
+            case 0: Registrar_Nuevo_Socio(); break;
+            case 1: Consultar_Datos_Socio(); break;
+            case 2: Actualizar_Estado_Socio(); break;
+            case 3: Gestionar_Multas_Socio(); break;
+            default: continuar = false; break;
+        }
+    }
+}
+
+public static int buscarSocio(String id) {
+    for (int i = 0; i < lista_socios.length; i++) {
+        if (lista_socios[i] != null && lista_socios[i].getIdSocio().equalsIgnoreCase(id)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+public static String pedirIdSocio() {
+    while (true) {
+        String id = JOptionPane.showInputDialog("Ingrese ID de socio:");
+        if (id == null) return null;
+        if (buscarSocio(id) != -1) return id;
+        JOptionPane.showMessageDialog(null, "No existe ese ID.");
+    }
+}
+
+public static String generarIdSocio() {
+    while (true) {
+        String letras = "" + (char)('A' + random.nextInt(26)) + (char)('A' + random.nextInt(26));
+        String numeros = "" + random.nextInt(10) + random.nextInt(10);
+        String id = "SOC-" + letras + numeros;
+        if (buscarSocio(id) == -1) return id;
+    }
+}
+
+public static String fecha_Actual(){
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    return ahora.format(f);
+}
+
+//EMPIEZA NUEVO SOCIO
+// ---- 1) Registrar ----
+public static void Registrar_Nuevo_Socio() {
+    if (contador_socios >= 30) {
+        JOptionPane.showMessageDialog(null, "Límite de socios alcanzado.");
+        return;
+    }
+    String id = generarIdSocio();
+    String nombre = "Socio " + (contador_socios + 1);
+    Socio s = new Socio(id, nombre, fecha_Actual(), Socio.EstadoSocio.ACTIVO, 0.0, 0);
+    lista_socios[contador_socios++] = s;
+
+    JOptionPane.showMessageDialog(null,
+        "ID: " + s.getIdSocio() + "\n" +
+        "Nombre: " + s.getNombreCompleto() + "\n" +
+        "Fecha Registro: " + s.getFechaRegistro() + "\n" +
+        "Estado: " + s.getEstadoSocio()
+    );
+}
+//TERMINA NUEVO SOCIO
+
+
+//EMPIEZA GENERAR DATOS SOCIO
+// ---- 2) Consultar ----
+public static void Consultar_Datos_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+    JOptionPane.showMessageDialog(null,
+        "ID: " + s.getIdSocio() + "\n" +
+        "Nombre: " + s.getNombreCompleto() + "\n" +
+        "Fecha Registro: " + s.getFechaRegistro() + "\n" +
+        "Estado: " + s.getEstadoSocio() + "\n" +
+        "Multas: " + s.getMultasAcumuladas() + "\n" +
+        "Libros Prestados: " + s.getCantidadLibrosPrestadosActual()
+    );
+}
+//TERMINA GENERAR DATOS SOCIO
+
+//EMPIEZA GENERAR ESTADO SOCIO
+// ---- 3) Actualizar Estado ----
+public static void Actualizar_Estado_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+
+    String[] opciones = {"ACTIVO", "SUSPENDIDO", "INACTIVO", "Cancelar"};
+    int seleccion = JOptionPane.showOptionDialog(
+        null, "Estado actual: " + s.getEstadoSocio(),
+        "Actualizar Estado", JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]
+    );
+
+    if (seleccion == 0 && s.getMultasAcumuladas() > 0) {
+        s.setEstadoSocio(Socio.EstadoSocio.MOROSO);
+        JOptionPane.showMessageDialog(null, "Tiene multas pendientes. Se mantiene MOROSO.");
+        return;
+    }
+    if (seleccion == 0) s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+    if (seleccion == 1) s.setEstadoSocio(Socio.EstadoSocio.SUSPENDIDO);
+    if (seleccion == 2) s.setEstadoSocio(Socio.EstadoSocio.INACTIVO);
+
+    if (seleccion >= 0 && seleccion <= 2)
+        JOptionPane.showMessageDialog(null, "Estado actualizado a: " + s.getEstadoSocio());
+}
+//TERMINA GENERAR ESTADO SOCIO
+
+//EMPIEZA GENERAR MULTAS
+// ---- 4) Gestionar Multas ----
+public static void Gestionar_Multas_Socio() {
+    String id = pedirIdSocio();
+    if (id == null) return;
+    Socio s = lista_socios[buscarSocio(id)];
+
+    String[] opciones = {"Pagar Todo", "Pagar Parcial", "Cancelar"};
+    int seleccion = JOptionPane.showOptionDialog(
+        null, "Multas: " + s.getMultasAcumuladas(),
+        "Multas", JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]
+    );
+
+    if (seleccion == 0) {
+        s.setMultasAcumuladas(0.0);
+        if (s.getCantidadLibrosPrestadosActual() == 0 || s.getEstadoSocio() == Socio.EstadoSocio.MOROSO)
+            s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+        JOptionPane.showMessageDialog(null, "Multas pagadas. Saldo 0. Estado: " + s.getEstadoSocio());
+    }
+    else if (seleccion == 1) {
+        if (s.getMultasAcumuladas() <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay multas.");
+            return;
+        }
+        while (true) {
+            String in = JOptionPane.showInputDialog("Monto a pagar (saldo: " + s.getMultasAcumuladas() + "):");
+            if (in == null) return;
+            try {
+                double m = Double.parseDouble(in);
+                if (m <= 0 || m > s.getMultasAcumuladas()) {
+                    JOptionPane.showMessageDialog(null, "Monto inválido.");
+                    continue;
+                }
+                s.setMultasAcumuladas(s.getMultasAcumuladas() - m);
+                if (s.getMultasAcumuladas() > 0) s.setEstadoSocio(Socio.EstadoSocio.MOROSO);
+                else if (s.getCantidadLibrosPrestadosActual() == 0) s.setEstadoSocio(Socio.EstadoSocio.ACTIVO);
+                JOptionPane.showMessageDialog(null, "Pago parcial registrado. Saldo: " + s.getMultasAcumuladas() + ". Estado: " + s.getEstadoSocio());
+                return;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato inválido.");
+            }
+        }
+    }
+}
+//TERMINA GENERAR MULTAS
+
+//EMPIEZA GENERAR SOCIOS
+// ---- Generador aleatorio de socios con IF para multas ----
+public static void generar_socios_aleatoriamente(int cantidad) {
+    if (cantidad > 30) cantidad = 30;
+
+    int creados = 0;
+    while (creados < cantidad && contador_socios < 30) {
+        String id = generarIdSocio();
+        String nombre = "Socio " + (contador_socios + 1);
+        boolean moroso = random.nextInt(100) < 15;
+
+        double multa;
+        if (moroso) {
+            multa = 1000.0;
+        } else {
+            multa = 0.0;
+        }
+
+        Socio s = new Socio(
+            id,
+            nombre,
+            fechaActual(),
+            moroso ? Socio.EstadoSocio.MOROSO : Socio.EstadoSocio.ACTIVO,
+            multa,
+            0
+        );
+
+        lista_socios[contador_socios] = s;
+        contador_socios++;
+        creados++;
+    }
+   } 
+  //TERMINA GENERAR SOCIOS
+}

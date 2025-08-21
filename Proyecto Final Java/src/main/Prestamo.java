@@ -5,7 +5,7 @@
 package main;
 
 public class Prestamo {
-    enum estadoPrestamo {
+   enum estadoPrestamo {
       ACTIVO,  
       DEVUELTO_A_TIEMPO, 
       DEVUELTO_CON_RETRASO, 
@@ -108,6 +108,4 @@ public class Prestamo {
         this.multaGeneradaEstePrestamo = multaGeneradaEstePrestamo;
     }
 
-   
-    
 }

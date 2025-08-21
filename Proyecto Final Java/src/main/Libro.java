@@ -136,12 +136,13 @@ public class Libro {
     }
 
     public int getVecesPrestado() {
-        return vecesPrestado;
+        return vecesPrestado++;
     }
 
     public void setVecesPrestado(int vecesPrestado) {
         this.vecesPrestado = vecesPrestado;
     }
+
    public void aumentoVecesPrestado(){
        this.vecesPrestado++;
    }   
