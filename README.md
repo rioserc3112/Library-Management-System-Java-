@@ -60,14 +60,19 @@ Proyecto Final Java/
   nbproject/        NetBeans project configuration
 ```
 
-## Team
+## Team and contributions
 
-- Halian Rosse Gaitan Chavarria
-- Jose Santos Martinez Hostis
-- Emmanuel Rios Castro
+| Module | Author |
+|---|---|
+| Loans: register loan, register return with fines, look up loan by ID | Halian Rosse Gaitan Chavarria |
+| Members: register, look up, status, fines; main menu | Jose Santos Martinez Hostis |
+| Catalog: add, edit, change status, display table; random book generator; book model | Emmanuel Rios Castro |
 
 ### My contribution
-<!-- Fill in with what you personally built. Example format: "Book model and catalog module (add, edit, change status, display), random book generator." Be specific and only list what you can explain in an interview. -->
+- Designed the `Libro` (book) model with genre and status enums and automatic book IDs
+- Built the catalog module: add books with input validation, edit book data, change book status, and display the catalog as a formatted table
+- Wrote the random book generator used to populate the system with test data
+- Wrote the program startup flow (number of test books, then the menu loop)
 
 ## Possible improvements
 
